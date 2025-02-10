@@ -14,28 +14,47 @@ class_name Card extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	set_card_cost(card_cost)
-	set_card_damage(card_damage)
-	set_card_name(card_name)
-	set_card_description(card_description)
+	set_values(card_name, card_description, card_cost, card_damage)
 	visible = false
+	
+func set_values(_name: String, _description: String, _cost: int, _damage: int) -> void:
+	card_name = _name
+	card_description = _description
+	card_cost = _cost
+	card_damage = _damage
+	update_card_graphics()
 
 func set_card_name(_name: String) -> void:
 	card_name = _name
-	name_lbl.set_text(_name)
+	update_card_graphics()
 	
 func set_card_cost(_cost: int) -> void:
 	card_cost = _cost
-	cost_lbl.set_text(str(_cost))
+	update_card_graphics()
 
 func set_card_damage(_damage: int) -> void:
 	card_damage = _damage
-	damage_lbl.set_text(str(_damage))
+	update_card_graphics()
 	
 func set_card_description(_description: String) -> void:
 	card_description = _description
-	description_lbl.set_text(_description)
+	update_card_graphics
+
+# Syncs the card's graphics with the card's data
+func update_card_graphics() -> void:
+	if cost_lbl.get_text() != str(card_cost):
+		cost_lbl.set_text(str(card_cost))
+	
+	if damage_lbl.get_text() != str(card_damage):
+		damage_lbl.set_text(str(card_damage))
+	
+	if name_lbl.get_text() != card_name:
+		name_lbl.set_text(card_name)
+	
+	if description_lbl.get_text() != card_description:
+		description_lbl.set_text(card_description)
+	visible = true
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	update_card_graphics()
