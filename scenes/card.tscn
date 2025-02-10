@@ -1,0 +1,64 @@
+[gd_scene load_steps=7 format=3 uid="uid://bx5c4krg53dfq"]
+
+[ext_resource type="Texture2D" uid="uid://olm70ph31u5g" path="res://sprites/card-placeholder.png" id="1_epeui"]
+[ext_resource type="Script" path="res://scripts/card.gd" id="1_q183m"]
+[ext_resource type="Texture2D" uid="uid://rdmrhc6lahfq" path="res://sprites/coin-placeholder.png" id="2_gidyd"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_6a1tc"]
+font_color = Color(0.984314, 0.94902, 0.211765, 1)
+outline_size = 4
+outline_color = Color(0.580392, 0.564706, 0.25098, 1)
+shadow_size = 0
+
+[sub_resource type="LabelSettings" id="LabelSettings_7huce"]
+font_size = 8
+font_color = Color(0.345098, 0.337255, 0.321569, 1)
+shadow_size = 0
+
+[sub_resource type="LabelSettings" id="LabelSettings_qwjnx"]
+font_size = 8
+font_color = Color(0.345098, 0.337255, 0.321569, 1)
+
+[node name="Card" type="Node2D"]
+script = ExtResource("1_q183m")
+
+[node name="BaseCardSprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_epeui")
+
+[node name="CostDisplay" type="Node2D" parent="."]
+
+[node name="CostBaseSprite" type="Sprite2D" parent="CostDisplay"]
+position = Vector2(25, -48)
+texture = ExtResource("2_gidyd")
+
+[node name="CostLbl" type="Label" parent="CostDisplay"]
+offset_left = -3.0
+offset_top = -60.0
+offset_right = 17.0
+offset_bottom = -37.0
+text = "3"
+label_settings = SubResource("LabelSettings_6a1tc")
+horizontal_alignment = 2
+
+[node name="NameDisplay" type="Node2D" parent="."]
+
+[node name="NameLbl" type="Label" parent="NameDisplay"]
+offset_left = -32.0
+offset_top = -26.0
+offset_right = 28.0
+offset_bottom = -13.0
+text = "Card Name"
+label_settings = SubResource("LabelSettings_7huce")
+
+[node name="CardImage" type="Node2D" parent="."]
+position = Vector2(0, -38)
+
+[node name="CardImageSprite" type="Sprite2D" parent="CardImage"]
+
+[node name="CardDescription" type="Label" parent="."]
+offset_left = -36.0
+offset_top = -10.0
+offset_right = 36.0
+offset_bottom = 13.0
+text = "text"
+label_settings = SubResource("LabelSettings_qwjnx")
