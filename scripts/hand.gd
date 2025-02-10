@@ -2,8 +2,8 @@
 class_name Hand extends Node2D
 
 @export var hand_radius: int = 1000
-# Cards only spread in 25 degree arc
-@export var angle_limit: float = 25
+# Cards only spread in 20 degree arc
+@export var angle_limit: float = 20
 # Max spread between cards - smaller gives more overlap in smaller decks
 @export var max_card_spread_angle: float = 2.5
 
@@ -17,6 +17,7 @@ func add_card(_card: Card):
 	add_child(_card)
 	reposition_cards()
 
+# Remove card by index from hand, positionally sort cards
 func remove_card(_index: int) -> Card:
 	var removing_card = hand[_index]
 	hand.remove_at(_index)
@@ -24,6 +25,7 @@ func remove_card(_index: int) -> Card:
 	reposition_cards()
 	return removing_card
 
+# Positionally sort cards
 func reposition_cards():
 	var card_spread = min(angle_limit / hand.size(), max_card_spread_angle)
 	var current_angle = -(card_spread * hand.size() - 1) / 2 - 90
@@ -31,11 +33,12 @@ func reposition_cards():
 		_update_card_transform(card, current_angle)
 		current_angle += card_spread
 
+# Get the position of a card for a given angle
 func get_card_position(_angle_in_deg: float) -> Vector2:
 	var x: float = hand_radius * cos(deg_to_rad(_angle_in_deg))
 	var y: float = hand_radius * sin(deg_to_rad(_angle_in_deg))
 	
-	return Vector2(x, y)
+	return Vector2(int(x), int(y))
 
 func _update_card_transform(card: Card, _angle_in_deg: float):
 	card.set_position(get_card_position(_angle_in_deg))

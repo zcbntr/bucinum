@@ -1,7 +1,6 @@
 extends Node2D
 
 @onready var card_scene: PackedScene = preload("res://scenes/card.tscn")
-@onready var spawn_point = $CanvasLayer/Spawn
 @onready var hand: Hand = $CanvasLayer/Hand
 
 # Called when the node enters the scene tree for the first time.
