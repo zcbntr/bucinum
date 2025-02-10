@@ -14,6 +14,8 @@ var hand: Array = []
 # Physically add card to hand, positionally sort cards
 func add_card(_card: Card):
 	hand.push_back(_card)
+	add_child(_card)
+	reposition_cards()
 
 func remove_card(_index: int) -> Card:
 	var removing_card = hand[_index]
