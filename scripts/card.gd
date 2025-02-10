@@ -14,15 +14,13 @@ class_name Card extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	set_values(card_name, card_description, card_cost, card_damage)
-	visible = false
+	set_values("Card Name", "Card Description", 1, 2)
 	
 func set_values(_name: String, _description: String, _cost: int, _damage: int) -> void:
 	card_name = _name
 	card_description = _description
 	card_cost = _cost
 	card_damage = _damage
-	update_card_graphics()
 
 func set_card_name(_name: String) -> void:
 	card_name = _name
@@ -38,9 +36,10 @@ func set_card_damage(_damage: int) -> void:
 	
 func set_card_description(_description: String) -> void:
 	card_description = _description
-	update_card_graphics
+	update_card_graphics()
 
 # Syncs the card's graphics with the card's data
+# Should only be run once the card is added to the scene tree otherwise the labels will be null
 func update_card_graphics() -> void:
 	if cost_lbl.get_text() != str(card_cost):
 		cost_lbl.set_text(str(card_cost))

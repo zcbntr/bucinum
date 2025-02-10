@@ -16,15 +16,12 @@ func _process(delta: float) -> void:
 
 func _on_create_card_1_button_pressed() -> void:
 	var card = card_scene.instantiate()
+	card.set_values("Card 1", "Card 1 Description", 1, 2)
 	hand.add_card(card)
 	
 
 
 func _on_create_card_2_button_pressed() -> void:
 	var card = card_scene.instantiate()
-	spawn_point.add_child(card)
-	card.set_card_name("Card 2")
-	card.set_card_cost(2)
-	card.set_card_damage(2)
-	card.set_card_description("Card 2 Description")
-	card.visible = true
+	card.set_values("Card 2", "Card 2 Description", 2, 3)
+	hand.add_card(card)
