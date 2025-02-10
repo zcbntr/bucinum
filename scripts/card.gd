@@ -11,6 +11,7 @@ class_name Card extends Node2D
 @onready var damage_lbl: Label = $DamageDisplay/DamageLbl
 @onready var name_lbl: Label = $NameDisplay/NameLbl
 @onready var description_lbl: Label = $CardDescription
+@onready var base_sprite: Sprite2D = $BaseCardSprite
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -53,7 +54,22 @@ func update_card_graphics() -> void:
 	if description_lbl.get_text() != card_description:
 		description_lbl.set_text(card_description)
 	visible = true
+	
+func highlight():
+	base_sprite.set_modulate(Color(1, 0.5, 0.3, 1))
+
+func unhighlight():
+	base_sprite.set_modulate(Color(1,1,1,1))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	update_card_graphics()
+
+
+func _on_clickable_area_mouse_entered() -> void:
+	highlight()
+	
+	
+
+func _on_clickable_area_mouse_exited() -> void:
+	unhighlight()
