@@ -4,17 +4,21 @@ class_name Card extends Node2D
 @export var card_name: String = "Card Name"
 @export var card_description: String = "Card Description"
 @export var card_cost: int = 1
+@export var card_damage: int = 1
 @export var card_image: Node2D
 
 @onready var cost_lbl: Label = $CostDisplay/CostLbl
+@onready var damage_lbl: Label = $DamageDisplay/DamageLbl
 @onready var name_lbl: Label = $NameDisplay/NameLbl
 @onready var description_lbl: Label = $CardDescription
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	set_card_cost(card_cost)
+	set_card_damage(card_damage)
 	set_card_name(card_name)
 	set_card_description(card_description)
+	visible = false
 
 func set_card_name(_name: String) -> void:
 	card_name = _name
@@ -23,6 +27,10 @@ func set_card_name(_name: String) -> void:
 func set_card_cost(_cost: int) -> void:
 	card_cost = _cost
 	cost_lbl.set_text(str(_cost))
+
+func set_card_damage(_damage: int) -> void:
+	card_damage = _damage
+	damage_lbl.set_text(str(_damage))
 	
 func set_card_description(_description: String) -> void:
 	card_description = _description

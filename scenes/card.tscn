@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://bx5c4krg53dfq"]
+[gd_scene load_steps=9 format=3 uid="uid://bx5c4krg53dfq"]
 
 [ext_resource type="Texture2D" uid="uid://olm70ph31u5g" path="res://sprites/card-placeholder.png" id="1_epeui"]
 [ext_resource type="Script" path="res://scripts/card.gd" id="1_q183m"]
 [ext_resource type="Texture2D" uid="uid://rdmrhc6lahfq" path="res://sprites/coin-placeholder.png" id="2_gidyd"]
+[ext_resource type="Texture2D" uid="uid://bdiw6mgjloxjw" path="res://sprites/damage-placeholder.png" id="4_wpd2g"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_6a1tc"]
 font_color = Color(0.984314, 0.94902, 0.211765, 1)
@@ -18,6 +19,11 @@ shadow_size = 0
 [sub_resource type="LabelSettings" id="LabelSettings_qwjnx"]
 font_size = 8
 font_color = Color(0.345098, 0.337255, 0.321569, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_4oqj5"]
+font_color = Color(0.458824, 0.647059, 0.980392, 1)
+outline_size = 3
+outline_color = Color(0.263618, 0.504675, 0.943998, 1)
 
 [node name="Card" type="Node2D"]
 script = ExtResource("1_q183m")
@@ -62,3 +68,17 @@ offset_right = 36.0
 offset_bottom = 13.0
 text = "text"
 label_settings = SubResource("LabelSettings_qwjnx")
+
+[node name="DamageDisplay" type="Node2D" parent="."]
+
+[node name="DamageLbl" type="Label" parent="DamageDisplay"]
+offset_left = -16.0
+offset_top = -60.0
+offset_right = 4.0
+offset_bottom = -37.0
+text = "2"
+label_settings = SubResource("LabelSettings_4oqj5")
+
+[node name="DamageBaseSprite" type="Sprite2D" parent="DamageDisplay"]
+position = Vector2(-25, -48)
+texture = ExtResource("4_wpd2g")
