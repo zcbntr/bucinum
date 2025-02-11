@@ -1,5 +1,7 @@
 class_name Card extends Node2D
 
+signal mouse_entered(card: Card)
+signal mouse_exited(card: Card)
 
 @export var card_name: String = "Card Name"
 @export var card_description: String = "Card Description"
@@ -67,9 +69,8 @@ func _process(delta: float) -> void:
 
 
 func _on_clickable_area_mouse_entered() -> void:
-	highlight()
-	
-	
+	mouse_entered.emit(self)
+
 
 func _on_clickable_area_mouse_exited() -> void:
-	unhighlight()
+	mouse_exited.emit(self)
