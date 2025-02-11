@@ -14,7 +14,6 @@ signal mouse_exited(card: Card)
 @onready var cost_lbl: Label = $CostDisplay/CostLbl
 @onready var damage_lbl: Label = $DamageDisplay/DamageLbl
 @onready var name_lbl: Label = $NameDisplay/NameLbl
-@onready var description_lbl: Label = $CardDescription
 @onready var base_sprite: Sprite2D = $BaseCardSprite
 
 # Called when the node enters the scene tree for the first time.
@@ -55,8 +54,6 @@ func update_card_graphics() -> void:
 	if name_lbl.get_text() != card_name:
 		name_lbl.set_text(card_name)
 	
-	if description_lbl.get_text() != card_description:
-		description_lbl.set_text(card_description)
 	visible = true
 	
 func highlight():

@@ -16,7 +16,6 @@ script = ExtResource("1_s1fn5")
 [node name="PlayerCharacter" type="Node2D" parent="GameScreen"]
 script = ExtResource("2_hnhx5")
 health = 10
-cards_played_in_round = 20
 
 [node name="PlayerSprite" type="Sprite2D" parent="GameScreen/PlayerCharacter"]
 position = Vector2(179, 112)
@@ -33,7 +32,6 @@ show_percentage = false
 [node name="EnemyCharacter" type="Node2D" parent="GameScreen"]
 script = ExtResource("2_hnhx5")
 health = 10
-cards_played_in_round = 20
 
 [node name="EnemySprite" type="Sprite2D" parent="GameScreen/EnemyCharacter"]
 position = Vector2(513, 92)
