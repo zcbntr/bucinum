@@ -17,9 +17,16 @@ func _process(delta: float) -> void:
 func _on_create_card_button_pressed() -> void:
 	var card = card_scene.instantiate()
 	var rng = RandomNumberGenerator.new()
-	var cost = rng.randi_range(0, 10)
-	var damage = rng.randi_range(0, 10)
-	card.set_values("Card Name", "Card Description", cost, damage)
+	var cost = rng.randi_range(1, 10)
+	var damage = rng.randi_range(1, 10)
+	var stats: Dictionary = {
+		"Cuteness": rng.randi_range(1, 100),
+		"Fluffyness": rng.randi_range(1, 100),
+		"Mischief": rng.randi_range(1, 10),
+		"Manners": rng.randi_range(1, 20),
+		"Age": rng.randi_range(1, 22)
+	}
+	card.set_values("Card Name", "Card Description", cost, damage, stats)
 	hand.add_card(card)
 
 func _on_play_button_pressed() -> void:

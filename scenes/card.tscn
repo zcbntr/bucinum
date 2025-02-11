@@ -28,12 +28,12 @@ size = Vector2(78, 126)
 [sub_resource type="LabelSettings" id="LabelSettings_gy8yp"]
 line_spacing = 0.0
 font_size = 8
-font_color = Color(0.2, 0.447059, 0.482353, 1)
+font_color = Color(0.345098, 0.337255, 0.321569, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_5524n"]
 line_spacing = 0.0
 font_size = 8
-font_color = Color(0.2, 0.447059, 0.482353, 1)
+font_color = Color(0.345098, 0.337255, 0.321569, 1)
 
 [node name="Card" type="Node2D" node_paths=PackedStringArray("action")]
 script = ExtResource("1_q183m")
@@ -89,6 +89,7 @@ texture = ExtResource("4_wpd2g")
 [node name="ClickableArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ClickableArea"]
+visible = false
 shape = SubResource("RectangleShape2D_hxmh3")
 
 [node name="CardAction" type="Node2D" parent="."]
@@ -109,7 +110,7 @@ Intelligence:
 Age:"
 label_settings = SubResource("LabelSettings_gy8yp")
 
-[node name="Label" type="Label" parent="Categories"]
+[node name="CategoryStatsLbl" type="Label" parent="Categories"]
 offset_left = 14.0
 offset_top = -13.0
 offset_right = 35.0

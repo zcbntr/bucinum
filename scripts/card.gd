@@ -5,6 +5,14 @@ signal mouse_exited(card: Card)
 
 @export var action: Node2D
 
+@export var stats: Dictionary = {
+	"Cuteness": 99,
+	"Fluffyness": 99,
+	"Mischief": 100,
+	"Manners": 14,
+	"Age": 5
+}
+
 @export var card_name: String = "Card Name"
 @export var card_description: String = "Card Description"
 @export var card_cost: int = 1
@@ -15,16 +23,19 @@ signal mouse_exited(card: Card)
 @onready var damage_lbl: Label = $DamageDisplay/DamageLbl
 @onready var name_lbl: Label = $NameDisplay/NameLbl
 @onready var base_sprite: Sprite2D = $BaseCardSprite
+@onready var categories_names_lbl: Label = $Categories/CategoryNamesLbl
+@onready var categories_stats_lbl: Label = $Categories/CategoryStatsLbl
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
 	
-func set_values(_name: String, _description: String, _cost: int, _damage: int) -> void:
+func set_values(_name: String, _description: String, _cost: int, _damage: int, _stats: Dictionary) -> void:
 	card_name = _name
 	card_description = _description
 	card_cost = _cost
 	card_damage = _damage
+	stats = _stats
 
 func set_card_name(_name: String) -> void:
 	card_name = _name
@@ -53,6 +64,18 @@ func update_card_graphics() -> void:
 	
 	if name_lbl.get_text() != card_name:
 		name_lbl.set_text(card_name)
+	
+#	CBA to check if it needs doing, just do it
+	var categories_name_lbl_string: String = ''
+	var categories_stats_lbl_string: String = ''
+	for category_name in stats.keys():
+		categories_name_lbl_string += str(category_name) + ":\n"
+	
+	for category_stat in stats.values():
+		categories_stats_lbl_string += str(category_stat) + "\n"
+	
+	categories_names_lbl.set_text(categories_name_lbl_string)
+	categories_stats_lbl.set_text(categories_stats_lbl_string)
 	
 	visible = true
 	
