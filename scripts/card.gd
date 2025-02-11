@@ -56,16 +56,13 @@ func set_card_description(_description: String) -> void:
 # Syncs the card's graphics with the card's data
 # Should only be run once the card is added to the scene tree otherwise the labels will be null
 func update_card_graphics() -> void:
-	if cost_lbl.get_text() != str(card_cost):
-		cost_lbl.set_text(str(card_cost))
+	cost_lbl.set_text(str(card_cost))
 	
-	if damage_lbl.get_text() != str(card_damage):
-		damage_lbl.set_text(str(card_damage))
+	damage_lbl.set_text(str(card_damage))
 	
-	if name_lbl.get_text() != card_name:
-		name_lbl.set_text(card_name)
+	name_lbl.set_text(card_name)
 	
-#	CBA to check if it needs doing, just do it
+#	Update categories/stats on the card
 	var categories_name_lbl_string: String = ''
 	var categories_stats_lbl_string: String = ''
 	for category_name in stats.keys():
@@ -76,9 +73,7 @@ func update_card_graphics() -> void:
 	
 	categories_names_lbl.set_text(categories_name_lbl_string)
 	categories_stats_lbl.set_text(categories_stats_lbl_string)
-	
-	visible = true
-	
+
 func highlight():
 	base_sprite.set_modulate(Color(1, 0.9, 0.9, 1))
 

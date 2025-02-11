@@ -1,5 +1,7 @@
 extends Node2D
 
+@export var player_character: Character
+@export var enemy_character: Character
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
