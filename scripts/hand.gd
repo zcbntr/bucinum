@@ -1,9 +1,9 @@
 @tool
 class_name Hand extends Node2D
 
-const ROT_VAR: int = 6
-const X_VAR: int = 5
-const Y_VAR: int = 5
+const ROT_VAR: int = 5
+const X_VAR: int = 4
+const Y_VAR: int = 4
 
 @export var hand_radius: int = 1000
 # Cards only spread in 20 degree arc

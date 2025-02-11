@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=3 uid="uid://dcupv7h1p5be4"]
+
+[ext_resource type="PackedScene" uid="uid://pa0j5wu1w7du" path="res://scenes/deck_and_hand.tscn" id="1_6gf0c"]
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_s1fn5"]
+[ext_resource type="Texture2D" uid="uid://l6onrvfxupol" path="res://sprites/player-placeholder.png" id="2_erpi8"]
+[ext_resource type="Script" path="res://scripts/character.gd" id="2_hnhx5"]
+[ext_resource type="Texture2D" uid="uid://fx7ntwbaigke" path="res://sprites/enemy-placeholder.png" id="3_m1clj"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_s1fn5")
+
+[node name="DeckAndHand" parent="." instance=ExtResource("1_6gf0c")]
+
+[node name="GameScreen" type="Node2D" parent="."]
+
+[node name="PlayerCharacter" type="Node2D" parent="GameScreen"]
+script = ExtResource("2_hnhx5")
+health = 10
+
+[node name="PlayerSprite" type="Sprite2D" parent="GameScreen/PlayerCharacter"]
+position = Vector2(179, 112)
+texture = ExtResource("2_erpi8")
+
+[node name="HealthBar" type="ProgressBar" parent="GameScreen/PlayerCharacter"]
+offset_left = 128.0
+offset_top = 43.0
+offset_right = 228.0
+offset_bottom = 63.0
+value = 100.0
+show_percentage = false
+
+[node name="EnemyCharacter" type="Node2D" parent="GameScreen"]
+
+[node name="EnemySprite" type="Sprite2D" parent="GameScreen/EnemyCharacter"]
+position = Vector2(513, 92)
+texture = ExtResource("3_m1clj")
+
+[node name="HealthBar" type="ProgressBar" parent="GameScreen/EnemyCharacter"]
+offset_left = 464.0
+offset_top = 23.0
+offset_right = 564.0
+offset_bottom = 43.0
+value = 100.0
+show_percentage = false
+
+[connection signal="card_played" from="DeckAndHand" to="." method="_on_deck_and_hand_card_played"]

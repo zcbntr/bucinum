@@ -81,3 +81,7 @@ func _on_clickable_area_mouse_entered() -> void:
 
 func _on_clickable_area_mouse_exited() -> void:
 	mouse_exited.emit(self)
+
+func play(game_objects):
+	$CardAction.activate()
+	pass

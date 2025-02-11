@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://bx5c4krg53dfq"]
+[gd_scene load_steps=11 format=3 uid="uid://bx5c4krg53dfq"]
 
 [ext_resource type="Texture2D" uid="uid://olm70ph31u5g" path="res://sprites/card-placeholder.png" id="1_epeui"]
 [ext_resource type="Script" path="res://scripts/card.gd" id="1_q183m"]
 [ext_resource type="Texture2D" uid="uid://rdmrhc6lahfq" path="res://sprites/coin-placeholder.png" id="2_gidyd"]
 [ext_resource type="Texture2D" uid="uid://bdiw6mgjloxjw" path="res://sprites/damage-placeholder.png" id="4_wpd2g"]
+[ext_resource type="Script" path="res://scripts/card_action.gd" id="5_n162s"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_6a1tc"]
 font_color = Color(0.984314, 0.94902, 0.211765, 1)
@@ -90,6 +91,9 @@ texture = ExtResource("4_wpd2g")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ClickableArea"]
 shape = SubResource("RectangleShape2D_hxmh3")
+
+[node name="CardAction" type="Node2D" parent="."]
+script = ExtResource("5_n162s")
 
 [connection signal="mouse_entered" from="ClickableArea" to="." method="_on_clickable_area_mouse_entered"]
 [connection signal="mouse_exited" from="ClickableArea" to="." method="_on_clickable_area_mouse_exited"]

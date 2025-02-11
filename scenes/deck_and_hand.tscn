@@ -6,11 +6,6 @@
 [node name="DeckAndHand" type="Node2D"]
 script = ExtResource("1_fdv7r")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="Hand" parent="CanvasLayer" instance=ExtResource("2_dkyec")]
-position = Vector2(320, 1200)
-
 [node name="CreateCard1Button" type="Button" parent="."]
 offset_right = 113.0
 offset_bottom = 31.0
@@ -30,6 +25,9 @@ offset_right = 98.0
 offset_bottom = 99.0
 text = "Delete
 "
+
+[node name="Hand" parent="." instance=ExtResource("2_dkyec")]
+position = Vector2(320, 1220)
 
 [connection signal="pressed" from="CreateCard1Button" to="." method="_on_create_card_1_button_pressed"]
 [connection signal="pressed" from="CreateCard2Button" to="." method="_on_create_card_2_button_pressed"]

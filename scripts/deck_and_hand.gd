@@ -1,5 +1,6 @@
 extends Node2D
 
+signal card_played(card: Card)
 @onready var card_scene: PackedScene = preload("res://scenes/card.tscn")
 @onready var hand: Hand = $CanvasLayer/Hand
 
