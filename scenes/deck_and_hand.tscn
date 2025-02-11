@@ -6,17 +6,17 @@
 [node name="DeckAndHand" type="Node2D"]
 script = ExtResource("1_fdv7r")
 
-[node name="CreateCard1Button" type="Button" parent="."]
+[node name="CreateCardButton" type="Button" parent="."]
 offset_right = 113.0
 offset_bottom = 31.0
-text = "Create Card 1
+text = "Add Card
 "
 
-[node name="CreateCard2Button" type="Button" parent="."]
+[node name="PlayButton" type="Button" parent="."]
 offset_top = 33.0
 offset_right = 113.0
 offset_bottom = 64.0
-text = "Create Card 2"
+text = "Play"
 
 [node name="DeleteCardButton" type="Button" parent="."]
 offset_left = -1.0
@@ -29,6 +29,6 @@ text = "Delete
 [node name="Hand" parent="." instance=ExtResource("2_dkyec")]
 position = Vector2(320, 1220)
 
-[connection signal="pressed" from="CreateCard1Button" to="." method="_on_create_card_1_button_pressed"]
-[connection signal="pressed" from="CreateCard2Button" to="." method="_on_create_card_2_button_pressed"]
+[connection signal="pressed" from="CreateCardButton" to="." method="_on_create_card_button_pressed"]
+[connection signal="pressed" from="PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="DeleteCardButton" to="." method="_on_delete_card_button_pressed"]

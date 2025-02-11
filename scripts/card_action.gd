@@ -9,3 +9,8 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
+
+
+func activate(game_state: Dictionary) -> void:
+	game_state.get("caster").spend_cards(1)
+	game_state.get("targets")[0].take_damage(1)

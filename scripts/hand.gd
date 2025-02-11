@@ -88,6 +88,17 @@ func _handle_card_touched(_card: Card) -> void:
 func _handle_card_untouched(_card: Card) -> void:
 	cards_touched.remove_at(cards_touched.find(_card))
 
+func is_empty() -> bool:
+	return hand.is_empty()
+
+func get_top_card() -> Card:
+	if (is_empty()):
+		return null
+	
+	var card = hand[hand.size() - 1]
+	remove_card(hand.size() - 1)
+	return card
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.

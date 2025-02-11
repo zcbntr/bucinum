@@ -29,8 +29,9 @@ outline_color = Color(0.263618, 0.504675, 0.943998, 1)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hxmh3"]
 size = Vector2(78, 126)
 
-[node name="Card" type="Node2D"]
+[node name="Card" type="Node2D" node_paths=PackedStringArray("action")]
 script = ExtResource("1_q183m")
+action = NodePath("CardAction")
 
 [node name="BaseCardSprite" type="Sprite2D" parent="."]
 texture = ExtResource("1_epeui")

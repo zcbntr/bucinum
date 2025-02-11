@@ -12,4 +12,7 @@ func _process(delta: float) -> void:
 
 
 func _on_deck_and_hand_card_played(card: Card) -> void:
-	pass # Replace with function body.
+	card.play({
+		"caster": $GameScreen/PlayerCharacter,
+		"targets": [$GameScreen/EnemyCharacter]
+	})

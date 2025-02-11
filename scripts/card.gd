@@ -3,6 +3,8 @@ class_name Card extends Node2D
 signal mouse_entered(card: Card)
 signal mouse_exited(card: Card)
 
+@export var action: Node2D
+
 @export var card_name: String = "Card Name"
 @export var card_description: String = "Card Description"
 @export var card_cost: int = 1
@@ -82,6 +84,5 @@ func _on_clickable_area_mouse_entered() -> void:
 func _on_clickable_area_mouse_exited() -> void:
 	mouse_exited.emit(self)
 
-func play(game_objects):
-	$CardAction.activate()
-	pass
+func play(game_state: Dictionary):
+	action.activate(game_state)
