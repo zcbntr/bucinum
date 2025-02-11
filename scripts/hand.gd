@@ -1,7 +1,9 @@
 @tool
 class_name Hand extends Node2D
 
-const ROT_VAR: int = 4
+const ROT_VAR: int = 6
+const X_VAR: int = 5
+const Y_VAR: int = 5
 
 @export var hand_radius: int = 1000
 # Cards only spread in 20 degree arc
@@ -21,7 +23,7 @@ func add_card(_card: Card):
 	add_child(_card)
 	_card.mouse_entered.connect(_handle_card_touched)
 	_card.mouse_exited.connect(_handle_card_untouched)
-	reposition_cards()
+	fan_cards()
 
 # Remove card by index from hand, positionally sort cards
 func remove_card(_index: int) -> Card:
@@ -37,7 +39,7 @@ func remove_card(_index: int) -> Card:
 	
 	hand.remove_at(_index)
 	remove_child(removing_card)
-	reposition_cards()
+	fan_cards()
 	
 	removing_card.queue_free()
 	return removing_card
@@ -51,8 +53,8 @@ func remove_selected_cards() -> Array:
 	
 	return removing_cards
 
-# Positionally sort cards
-func reposition_cards():
+# Fan cards
+func fan_cards():
 	var card_spread = min(angle_limit / hand.size(), max_card_spread_angle)
 	var current_angle = -(card_spread * hand.size() - 1) / 2 - 90
 	
@@ -68,11 +70,17 @@ func get_card_position(_angle_in_deg: float) -> Vector2:
 	return Vector2(int(x), int(y))
 
 func _update_card_transform(card: Card, _angle_in_deg: float):
-	card.set_position(get_card_position(_angle_in_deg))
+#	Random variation
+	var rng = RandomNumberGenerator.new()
+	var x_offset = rng.randf_range(-0.5 * X_VAR, 0.5 * X_VAR)
+	var y_offset = rng.randf_range(-0.5 * Y_VAR, 0.5 * Y_VAR)
+	var rot_offset = rng.randf_range(-0.5 * ROT_VAR, 0.5 * ROT_VAR)
+	
+	card.set_position(get_card_position(_angle_in_deg) + Vector2(int(x_offset), int(y_offset)))
 	
 	#	Add some random variantion
-	var rng = RandomNumberGenerator.new()
-	card.set_rotation(deg_to_rad(_angle_in_deg + 90 + rng.randf_range(-0.5 * ROT_VAR, 0.5 * ROT_VAR)))
+
+	card.set_rotation(deg_to_rad(_angle_in_deg + 90 + rot_offset))
 
 func _handle_card_touched(_card: Card) -> void:
 	cards_touched.push_back(_card)
@@ -97,7 +105,7 @@ func _input(event):
 			if (cards_selected.find(card_clicked) == -1):
 				cards_selected.push_back(cards_touched[highest_touched_index])
 			else:
-				cards_selected.remove_at(highest_touched_index)
+				cards_selected.remove_at(cards_selected.find(card_clicked))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
