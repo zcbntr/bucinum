@@ -1,6 +1,8 @@
 @tool
 class_name Hand extends Node2D
 
+const ROT_VAR: int = 4
+
 @export var hand_radius: int = 1000
 # Cards only spread in 20 degree arc
 @export var angle_limit: float = 20
@@ -32,8 +34,9 @@ func remove_card(_index: int) -> Card:
 func reposition_cards():
 	var card_spread = min(angle_limit / hand.size(), max_card_spread_angle)
 	var current_angle = -(card_spread * hand.size() - 1) / 2 - 90
+	
 	for card in hand:
-		_update_card_transform(card, current_angle)
+		_update_card_transform(card, current_angle )
 		current_angle += card_spread
 
 # Get the position of a card for a given angle
@@ -45,7 +48,10 @@ func get_card_position(_angle_in_deg: float) -> Vector2:
 
 func _update_card_transform(card: Card, _angle_in_deg: float):
 	card.set_position(get_card_position(_angle_in_deg))
-	card.set_rotation(deg_to_rad(_angle_in_deg + 90))
+	
+	#	Add some random variantion
+	var rng = RandomNumberGenerator.new()
+	card.set_rotation(deg_to_rad(_angle_in_deg + 90 + rng.randf_range(-0.5 * ROT_VAR, 0.5 * ROT_VAR)))
 
 func _handle_card_touched(_card: Card) -> void:
 	cards_touched.push_back(_card)
