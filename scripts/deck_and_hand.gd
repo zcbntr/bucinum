@@ -24,3 +24,7 @@ func _on_create_card_2_button_pressed() -> void:
 	var card = card_scene.instantiate()
 	card.set_values("Card 2", "Card 2 Description", 2, 3)
 	hand.add_card(card)
+
+
+func _on_delete_card_button_pressed() -> void:
+	hand.remove_selected_cards()

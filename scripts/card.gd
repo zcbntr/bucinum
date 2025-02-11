@@ -58,10 +58,17 @@ func update_card_graphics() -> void:
 	visible = true
 	
 func highlight():
-	base_sprite.set_modulate(Color(1, 0.5, 0.3, 1))
+	base_sprite.set_modulate(Color(1, 0.9, 0.9, 1))
 
 func unhighlight():
 	base_sprite.set_modulate(Color(1,1,1,1))
+
+func select():
+	base_sprite.set_modulate(Color(0.42, 0.25, 0.8, 1))
+	
+func highlight_select():
+	base_sprite.set_modulate(Color(0.5, 0.3, 1, 1))
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
