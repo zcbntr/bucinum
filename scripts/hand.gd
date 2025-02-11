@@ -98,12 +98,12 @@ func _input(event):
 #			Get the rightmost touched card
 			var highest_touched_index: int = -1
 			for card in cards_touched:
-				highest_touched_index = max(highest_touched_index, cards_touched.find(card))
-			var card_clicked = cards_touched[highest_touched_index]
+				highest_touched_index = max(highest_touched_index, hand.find(card))
+			var card_clicked = hand[highest_touched_index]
 			
 #			Select the card. If its already selected unselect it
 			if (cards_selected.find(card_clicked) == -1):
-				cards_selected.push_back(cards_touched[highest_touched_index])
+				cards_selected.push_back(hand[highest_touched_index])
 			else:
 				cards_selected.remove_at(cards_selected.find(card_clicked))
 
