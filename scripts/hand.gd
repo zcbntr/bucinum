@@ -38,13 +38,16 @@ func remove_card(_index: int) -> Card:
 	hand.remove_at(_index)
 	remove_child(removing_card)
 	reposition_cards()
+	
+	removing_card.queue_free()
 	return removing_card
 
 func remove_selected_cards() -> Array:
-	var removing_cards = cards_selected
-	for card in removing_cards:
-		var card_index = hand.find(card)
-		remove_card(card_index)
+	var removing_cards: Array = []
+	
+	while !cards_selected.is_empty():
+		var card_index = hand.find(cards_selected[0])
+		removing_cards.push_back(remove_card(card_index))
 	
 	return removing_cards
 
@@ -73,7 +76,6 @@ func _update_card_transform(card: Card, _angle_in_deg: float):
 
 func _handle_card_touched(_card: Card) -> void:
 	cards_touched.push_back(_card)
-
 
 func _handle_card_untouched(_card: Card) -> void:
 	cards_touched.remove_at(cards_touched.find(_card))
