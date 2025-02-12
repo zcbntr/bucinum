@@ -10,6 +10,7 @@ const Y_VAR: int = 4
 @export var angle_limit: float = 20
 # Max spread between cards - smaller gives more overlap in smaller decks
 @export var max_card_spread_angle: float = 2.5
+@export var selected_category: String
 
 @onready var collision_shape: CollisionShape2D = $DebugCircle
 
@@ -31,6 +32,8 @@ func remove_top_card() -> Card:
 # Physically add card to hand, positionally sort cards
 func add_card(_card: Card):
 	hand.push_back(_card)
+	_card.category_hovered.connect(_handle_card_category_hovered)
+	_card.category_unhovered.connect(_handle_card_category_unhovered)
 	add_child(_card)
 	_card.mouse_entered.connect(_handle_card_touched)
 	_card.mouse_exited.connect(_handle_card_untouched)
@@ -49,6 +52,8 @@ func remove_card(_index: int) -> Card:
 		cards_selected.remove_at(selected_card_index)
 	
 	hand.remove_at(_index)
+	#removing_card.category_hovered.disconnect()
+	#removing_card.category_unhovered.disconnect()
 	remove_child(removing_card)
 	fan_cards()
 	
@@ -138,4 +143,9 @@ func _process(delta: float) -> void:
 #	Tool logic
 	if (collision_shape.shape as CircleShape2D).radius != hand_radius:
 		(collision_shape.shape as CircleShape2D).set_radius(hand_radius)
-	
+
+func _handle_card_category_hovered(category: String):
+	selected_category = category
+
+func _handle_card_category_unhovered():
+	selected_category = ""

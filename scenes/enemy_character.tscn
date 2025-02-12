@@ -10,6 +10,7 @@ script = ExtResource("1_yrak4")
 [node name="Hand" parent="." instance=ExtResource("2_fburf")]
 position = Vector2(0, 2030)
 hand_radius = 2000
+selected_category = null
 
 [node name="EnemySprite" type="Sprite2D" parent="."]
 texture = ExtResource("2_t40xi")

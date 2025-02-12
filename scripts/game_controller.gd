@@ -40,6 +40,14 @@ func get_prev_comparison_result() -> ComparisonResult:
 func push_comparison_result(_result: ComparisonResult) -> void:
 	comparison_history.push_front(_result)
 
+static func compare_cards(_category: String, _player_card: Card, _enemy_card: Card) -> GameController.ComparisonResult:
+	if _player_card.stats.get(_category) > _enemy_card.stats.get(_category):
+		return 0
+	elif _player_card.stats.get(_category) < _enemy_card.stats.get(_category):
+		return 1
+	else:
+		return 2
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

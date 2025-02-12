@@ -3,11 +3,12 @@
 [ext_resource type="Script" path="res://scripts/hand.gd" id="1_7xxif"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kacww"]
-radius = 1000.0
+radius = 2000.0
 
 [node name="Hand" type="Node2D"]
 script = ExtResource("1_7xxif")
 angle_limit = 25.0
+selected_category = null
 
 [node name="DebugCircle" type="CollisionShape2D" parent="."]
 visible = false

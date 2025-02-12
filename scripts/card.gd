@@ -2,6 +2,8 @@ class_name Card extends Node2D
 
 signal mouse_entered(card: Card)
 signal mouse_exited(card: Card)
+signal category_hovered(category: String)
+signal category_unhovered()
 
 @onready var card_category_display_scene: PackedScene = preload("res://scenes/card_category_display.tscn")
 
@@ -21,7 +23,7 @@ signal mouse_exited(card: Card)
 @export var card_cost: int = 1
 @export var card_damage: int = 1
 @export var card_image: Node2D
-@export var selected_category: String
+@export var hovered_category: String
 
 @onready var cost_lbl: Label = $CostDisplay/CostLbl
 @onready var damage_lbl: Label = $DamageDisplay/DamageLbl
@@ -72,7 +74,7 @@ func update_card_graphics() -> void:
 	
 	damage_lbl.set_text(str(card_damage))
 	
-	name_lbl.set_text(selected_category)
+	name_lbl.set_text(card_name)
 
 func highlight():
 	base_sprite.set_modulate(Color(0.75, 0.6, 0.75, 1))
@@ -104,9 +106,11 @@ func activate(game_state: Dictionary):
 
 
 func _on_category_mouse_entered(_category: String) -> void:
-	selected_category = _category
+	hovered_category = _category
+	category_hovered.emit(_category)
 
 
 func _on_category_mouse_exited(_category: String) -> void:
-	if (selected_category == _category):
-		selected_category = ""
+	if (hovered_category == _category):
+		hovered_category = ""
+		category_unhovered.emit()
