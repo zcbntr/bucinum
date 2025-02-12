@@ -21,7 +21,7 @@ signal mouse_exited(card: Card)
 @export var card_cost: int = 1
 @export var card_damage: int = 1
 @export var card_image: Node2D
-@export var selected_category_index: int = -1
+@export var selected_category: String
 
 @onready var cost_lbl: Label = $CostDisplay/CostLbl
 @onready var damage_lbl: Label = $DamageDisplay/DamageLbl
@@ -37,6 +37,8 @@ func _ready() -> void:
 		cat_display.category_name = stats.keys()[i]
 		cat_display.category_value = stats.values()[i]
 		cat_display.position = Vector2(-39, -12 + (14 * i))
+		cat_display.mouse_entered.connect(_on_category_mouse_entered)
+		cat_display.mouse_exited.connect(_on_category_mouse_exited)
 		add_child(cat_display)
 
 
@@ -65,14 +67,12 @@ func set_card_description(_description: String) -> void:
 
 # Syncs the card's graphics with the card's data
 # Should only be run once the card is added to the scene tree otherwise the labels will be null
-func update_card_graphics() -> void:
-	print(selected_category_index)
-	
+func update_card_graphics() -> void:	
 	cost_lbl.set_text(str(card_cost))
 	
 	damage_lbl.set_text(str(card_damage))
 	
-	name_lbl.set_text(card_name)
+	name_lbl.set_text(selected_category)
 
 func highlight():
 	base_sprite.set_modulate(Color(0.75, 0.6, 0.75, 1))
@@ -103,64 +103,10 @@ func activate(game_state: Dictionary):
 	action.activate(game_state)
 
 
-func _on_category_0_lbl_mouse_entered() -> void:
-	selected_category_index = 0
+func _on_category_mouse_entered(_category: String) -> void:
+	selected_category = _category
 
 
-func _on_category_0_lbl_mouse_exited() -> void:
-	if (selected_category_index == 0):
-		selected_category_index = -1
-
-
-func _on_category_1_lbl_mouse_entered() -> void:
-	selected_category_index = 1
-
-
-func _on_category_1_lbl_mouse_exited() -> void:
-	if (selected_category_index == 1):
-		selected_category_index = -1
-
-
-func _on_category_2_lbl_mouse_entered() -> void:
-	selected_category_index = 2
-
-
-func _on_category_2_lbl_mouse_exited() -> void:
-	if (selected_category_index == 2):
-		selected_category_index = -1
-
-
-func _on_category_3_lbl_mouse_entered() -> void:
-	selected_category_index = 3
-
-
-func _on_category_3_lbl_mouse_exited() -> void:
-	if (selected_category_index == 3):
-		selected_category_index = -1
-
-
-func _on_category_4_lbl_mouse_entered() -> void:
-	selected_category_index = 4
-
-
-func _on_category_4_lbl_mouse_exited() -> void:
-	if (selected_category_index == 4):
-		selected_category_index = -1
-
-
-func _on_category_5_lbl_mouse_entered() -> void:
-	selected_category_index = 5
-
-
-func _on_category_5_lbl_mouse_exited() -> void:
-	if (selected_category_index == 5):
-		selected_category_index = -1
-
-
-func _on_category_0_display_mouse_entered() -> void:
-	selected_category_index = 0
-
-
-func _on_category_0_display_mouse_exited() -> void:
-	if (selected_category_index == 0):
-		selected_category_index = -1
+func _on_category_mouse_exited(_category: String) -> void:
+	if (selected_category == _category):
+		selected_category = ""
