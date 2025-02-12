@@ -10,7 +10,8 @@ signal mouse_exited(card: Card)
 	"Fluffyness": 99,
 	"Mischief": 100,
 	"Manners": 14,
-	"Age": 5
+	"Age": 5,
+	"Legs": 4
 }
 
 @export var card_name: String = "Card Name"
@@ -23,14 +24,15 @@ signal mouse_exited(card: Card)
 @onready var damage_lbl: Label = $DamageDisplay/DamageLbl
 @onready var name_lbl: Label = $NameDisplay/NameLbl
 @onready var base_sprite: Sprite2D = $BaseCardSprite
-@onready var categories_names_lbl: Label = $Categories/CategoryNamesLbl
-@onready var categories_stats_lbl: Label = $Categories/CategoryStatsLbl
+@onready var category_lbls: Array[Label] = [$Categories/Category1Lbl, $Categories/Category2Lbl, $Categories/Category3Lbl, $Categories/Category4Lbl, $Categories/Category5Lbl, $Categories/Category6Lbl]
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	$CostDisplay.visible = false
+	for i in category_lbls.size():
+		category_lbls[i].set_text('')
 	pass
-	
+
 func set_values(_name: String, _description: String, _cost: int, _damage: int, _stats: Dictionary) -> void:
 	card_name = _name
 	card_description = _description
@@ -41,7 +43,7 @@ func set_values(_name: String, _description: String, _cost: int, _damage: int, _
 func set_card_name(_name: String) -> void:
 	card_name = _name
 	update_card_graphics()
-	
+
 func set_card_cost(_cost: int) -> void:
 	card_cost = _cost
 	update_card_graphics()
@@ -49,7 +51,7 @@ func set_card_cost(_cost: int) -> void:
 func set_card_damage(_damage: int) -> void:
 	card_damage = _damage
 	update_card_graphics()
-	
+
 func set_card_description(_description: String) -> void:
 	card_description = _description
 	update_card_graphics()
@@ -66,14 +68,9 @@ func update_card_graphics() -> void:
 #	Update categories/stats on the card
 	var categories_name_lbl_string: String = ''
 	var categories_stats_lbl_string: String = ''
-	for category_name in stats.keys():
-		categories_name_lbl_string += str(category_name) + ":\n"
-	
-	for category_stat in stats.values():
-		categories_stats_lbl_string += str(category_stat) + "\n"
-	
-	categories_names_lbl.set_text(categories_name_lbl_string)
-	categories_stats_lbl.set_text(categories_stats_lbl_string)
+	for i in stats.keys().size():
+		category_lbls[i].set_text(str(stats.keys()[i]) + ": " + str(stats.values()[i]))
+
 
 func highlight():
 	base_sprite.set_modulate(Color(1, 0.9, 0.9, 1))
@@ -100,5 +97,5 @@ func _on_clickable_area_mouse_entered() -> void:
 func _on_clickable_area_mouse_exited() -> void:
 	mouse_exited.emit(self)
 
-func play(game_state: Dictionary):
+func activate(game_state: Dictionary):
 	action.activate(game_state)

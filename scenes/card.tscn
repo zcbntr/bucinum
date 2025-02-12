@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bx5c4krg53dfq"]
+[gd_scene load_steps=11 format=3 uid="uid://bx5c4krg53dfq"]
 
 [ext_resource type="Texture2D" uid="uid://olm70ph31u5g" path="res://sprites/card-placeholder.png" id="1_epeui"]
 [ext_resource type="Script" path="res://scripts/card.gd" id="1_q183m"]
@@ -24,11 +24,6 @@ outline_color = Color(0.263618, 0.504675, 0.943998, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hxmh3"]
 size = Vector2(78, 126)
-
-[sub_resource type="LabelSettings" id="LabelSettings_gy8yp"]
-line_spacing = 0.0
-font_size = 8
-font_color = Color(0.345098, 0.337255, 0.321569, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_5524n"]
 line_spacing = 0.0
@@ -98,30 +93,57 @@ script = ExtResource("5_n162s")
 
 [node name="Categories" type="Node2D" parent="."]
 
-[node name="CategoryNamesLbl" type="Label" parent="Categories"]
+[node name="Category1Lbl" type="Label" parent="Categories"]
 offset_left = -35.0
 offset_top = -13.0
-offset_right = 12.0
-offset_bottom = 60.0
-text = "Cuteness:
-Fluffyness:
-Mischief:
-Manners:
-Intelligence:
-Age:"
-label_settings = SubResource("LabelSettings_gy8yp")
-
-[node name="CategoryStatsLbl" type="Label" parent="Categories"]
-offset_left = 14.0
-offset_top = -13.0
 offset_right = 35.0
-offset_bottom = 60.0
-text = "99
-99
-100
-14
-3
-5"
+offset_bottom = -1.0
+text = "<category 1 text>"
+label_settings = SubResource("LabelSettings_5524n")
+horizontal_alignment = 1
+
+[node name="Category2Lbl" type="Label" parent="Categories"]
+offset_left = -35.0
+offset_top = -1.0
+offset_right = 35.0
+offset_bottom = 11.0
+text = "<category 2 text>"
+label_settings = SubResource("LabelSettings_5524n")
+horizontal_alignment = 1
+
+[node name="Category3Lbl" type="Label" parent="Categories"]
+offset_left = -35.0
+offset_top = 11.0
+offset_right = 35.0
+offset_bottom = 23.0
+text = "<category 3 text>"
+label_settings = SubResource("LabelSettings_5524n")
+horizontal_alignment = 1
+
+[node name="Category4Lbl" type="Label" parent="Categories"]
+offset_left = -35.0
+offset_top = 23.0
+offset_right = 35.0
+offset_bottom = 35.0
+text = "<category 4 text>"
+label_settings = SubResource("LabelSettings_5524n")
+horizontal_alignment = 1
+
+[node name="Category5Lbl" type="Label" parent="Categories"]
+offset_left = -35.0
+offset_top = 35.0
+offset_right = 35.0
+offset_bottom = 47.0
+text = "<category 5 text>"
+label_settings = SubResource("LabelSettings_5524n")
+horizontal_alignment = 1
+
+[node name="Category6Lbl" type="Label" parent="Categories"]
+offset_left = -35.0
+offset_top = 47.0
+offset_right = 35.0
+offset_bottom = 59.0
+text = "<category 6 text>"
 label_settings = SubResource("LabelSettings_5524n")
 horizontal_alignment = 1
 

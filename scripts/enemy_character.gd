@@ -5,6 +5,7 @@ func play_turn() -> Card:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	health = 8
 	hand.angle_limit = 5
 	hand.hand_radius = 1050
 	pass # Replace with function body.

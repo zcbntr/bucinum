@@ -52,7 +52,6 @@ func remove_card(_index: int) -> Card:
 	remove_child(removing_card)
 	fan_cards()
 	
-	removing_card.queue_free()
 	return removing_card
 
 func remove_selected_cards() -> Array[Card]:
@@ -88,9 +87,6 @@ func _update_card_transform(card: Card, _angle_in_deg: float):
 	var rot_offset = rng.randf_range(-0.5 * ROT_VAR, 0.5 * ROT_VAR)
 	
 	card.set_position(get_card_position(_angle_in_deg) + Vector2(int(x_offset), int(y_offset)))
-	
-	#	Add some random variantion
-
 	card.set_rotation(deg_to_rad(_angle_in_deg + 90 + rot_offset))
 
 func _handle_card_touched(_card: Card) -> void:
