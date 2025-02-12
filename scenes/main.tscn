@@ -1,10 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://dcupv7h1p5be4"]
+[gd_scene load_steps=7 format=3 uid="uid://dcupv7h1p5be4"]
 
-[ext_resource type="PackedScene" uid="uid://pa0j5wu1w7du" path="res://scenes/deck_and_hand.tscn" id="1_6gf0c"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_s1fn5"]
-[ext_resource type="Texture2D" uid="uid://l6onrvfxupol" path="res://sprites/player-placeholder.png" id="2_erpi8"]
-[ext_resource type="Script" path="res://scripts/character.gd" id="2_hnhx5"]
-[ext_resource type="Texture2D" uid="uid://fx7ntwbaigke" path="res://sprites/enemy-placeholder.png" id="3_m1clj"]
+[ext_resource type="PackedScene" uid="uid://dlogf7dqymgon" path="res://scenes/player_character.tscn" id="2_dxoge"]
+[ext_resource type="PackedScene" uid="uid://dwc8y6tmbtg4b" path="res://scenes/enemy_character.tscn" id="3_tay2c"]
 [ext_resource type="Script" path="res://scripts/game_controller.gd" id="6_8xm4k"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_qrjun"]
@@ -59,45 +57,39 @@ text = "Victory"
 label_settings = SubResource("LabelSettings_fyt5l")
 horizontal_alignment = 1
 
-[node name="DeckAndHand" parent="." instance=ExtResource("1_6gf0c")]
-
 [node name="GameScreen" type="Node2D" parent="."]
 
-[node name="PlayerCharacter" type="Node2D" parent="GameScreen"]
-script = ExtResource("2_hnhx5")
-health = 10
-cards_left_to_play_in_round = 20
+[node name="PlayerCharacter" parent="GameScreen" instance=ExtResource("2_dxoge")]
 
-[node name="PlayerSprite" type="Sprite2D" parent="GameScreen/PlayerCharacter"]
-position = Vector2(179, 112)
-texture = ExtResource("2_erpi8")
-
-[node name="HealthBar" type="ProgressBar" parent="GameScreen/PlayerCharacter"]
-offset_left = 128.0
-offset_top = 43.0
-offset_right = 228.0
-offset_bottom = 63.0
-value = 100.0
-show_percentage = false
-
-[node name="EnemyCharacter" type="Node2D" parent="GameScreen"]
-script = ExtResource("2_hnhx5")
-health = 10
-cards_left_to_play_in_round = 20
-
-[node name="EnemySprite" type="Sprite2D" parent="GameScreen/EnemyCharacter"]
-position = Vector2(513, 92)
-texture = ExtResource("3_m1clj")
-
-[node name="HealthBar" type="ProgressBar" parent="GameScreen/EnemyCharacter"]
-offset_left = 464.0
-offset_top = 23.0
-offset_right = 564.0
-offset_bottom = 43.0
-value = 100.0
-show_percentage = false
+[node name="EnemyCharacter" parent="GameScreen" instance=ExtResource("3_tay2c")]
 
 [node name="GameController" type="Node2D" parent="."]
 script = ExtResource("6_8xm4k")
 
-[connection signal="card_played" from="DeckAndHand" to="." method="_on_deck_and_hand_card_played"]
+[node name="PlayUI" type="Node2D" parent="."]
+
+[node name="PlayButton" type="Button" parent="PlayUI"]
+offset_left = 561.0
+offset_top = 177.0
+offset_right = 602.0
+offset_bottom = 208.0
+text = "Play"
+
+[node name="DeleteButton" type="Button" parent="PlayUI"]
+offset_left = 555.0
+offset_top = 140.0
+offset_right = 614.0
+offset_bottom = 171.0
+text = "Delete"
+
+[node name="CreateCardButton" type="Button" parent="PlayUI"]
+offset_left = 9.0
+offset_top = 12.0
+offset_right = 109.0
+offset_bottom = 43.0
+text = "Create Card
+"
+
+[connection signal="pressed" from="PlayUI/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="PlayUI/DeleteButton" to="." method="_on_delete_card_button_pressed"]
+[connection signal="pressed" from="PlayUI/CreateCardButton" to="." method="_on_create_card_button_pressed"]

@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://dwc8y6tmbtg4b"]
+
+[ext_resource type="Script" path="res://scripts/enemy_character.gd" id="1_yrak4"]
+[ext_resource type="PackedScene" uid="uid://dy07wyrkm50l" path="res://scenes/hand.tscn" id="2_fburf"]
+[ext_resource type="Texture2D" uid="uid://fx7ntwbaigke" path="res://sprites/enemy-placeholder.png" id="2_t40xi"]
+
+[node name="EnemyCharacter" type="Node2D"]
+script = ExtResource("1_yrak4")
+
+[node name="Hand" parent="." instance=ExtResource("2_fburf")]
+
+[node name="EnemySprite" type="Sprite2D" parent="."]
+position = Vector2(513, 92)
+texture = ExtResource("2_t40xi")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_left = 464.0
+offset_top = 23.0
+offset_right = 564.0
+offset_bottom = 43.0
+value = 100.0
+show_percentage = false

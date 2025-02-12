@@ -8,6 +8,20 @@ class_name Character extends Node2D
 @export var max_cards_per_round: int = 20
 @export var cards_left_to_play_in_round: int = max_cards_per_round
 
+@onready var hand: Hand = $Hand
+
+func remove_selected_cards() -> Array[Card]:
+	return hand.remove_selected_cards()
+
+func hand_is_empty() -> bool:
+	return hand.is_empty()
+
+func remove_top_card() -> Card:
+	return hand.remove_top_card()
+
+func add_card_to_hand(_card: Card) -> void:
+	hand.add_card(_card)
+
 func set_health_values(_health: int, _max_health: int) -> void:
 	max_health = _max_health
 	health = _health
@@ -37,6 +51,7 @@ func take_damage(_amount: int) -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	hand = $Hand
 	pass # Replace with function body.
 
 

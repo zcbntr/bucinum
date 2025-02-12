@@ -17,6 +17,17 @@ var hand: Array = []
 var cards_touched: Array = []
 var cards_selected: Array = []
 
+func is_empty() -> bool:
+	return hand.is_empty()
+
+func remove_top_card() -> Card:
+	if (is_empty()):
+		return null
+	
+	var card = hand[hand.size() - 1]
+	remove_card(hand.size() - 1)
+	return card
+
 # Physically add card to hand, positionally sort cards
 func add_card(_card: Card):
 	hand.push_back(_card)
@@ -44,8 +55,8 @@ func remove_card(_index: int) -> Card:
 	removing_card.queue_free()
 	return removing_card
 
-func remove_selected_cards() -> Array:
-	var removing_cards: Array = []
+func remove_selected_cards() -> Array[Card]:
+	var removing_cards: Array[Card] = []
 	
 	while !cards_selected.is_empty():
 		var card_index = hand.find(cards_selected[0])
@@ -87,17 +98,6 @@ func _handle_card_touched(_card: Card) -> void:
 
 func _handle_card_untouched(_card: Card) -> void:
 	cards_touched.remove_at(cards_touched.find(_card))
-
-func is_empty() -> bool:
-	return hand.is_empty()
-
-func get_top_card() -> Card:
-	if (is_empty()):
-		return null
-	
-	var card = hand[hand.size() - 1]
-	remove_card(hand.size() - 1)
-	return card
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
