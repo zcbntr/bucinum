@@ -19,25 +19,34 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	($StateLbl as Label).set_text(str(game_controller.current_state))
+	
 	if game_controller.current_state == GameController.GameState.ENEMY_TURN:
 #		AI Logic
-		play_enemy_hand()
+		play_enemy_card()
 		
-		game_controller.transition(GameController.GameState.PLAYER_TURN)
-	
-	check_game_valid()
+	elif game_controller.current_state == GameController.GameState.ROUND_WON:
+		$CanvasLayer/RoundWonOverlay.visible = true
 		
+	elif game_controller.current_state == GameController.GameState.VICTORY:
+		$CanvasLayer/VictoryOverlay.visible = true
+		
+	elif game_controller.current_state == GameController.GameState.GAMEOVER:
+		$CanvasLayer/GameOverOverlay.visible = true
 
-func play_enemy_hand() -> void:
+
+func play_enemy_card() -> void:
 	if (!enemy_character.hand_is_empty()):
 		var card = enemy_character.remove_top_card()
 		card.play({
 			"caster": $GameScreen/EnemyCharacter,
 			"targets": [$GameScreen/PlayerCharacter]
 		})
+	
+	transition_game_state()
 
 
-func _on_deck_and_hand_card_played(card: Card) -> void:
+func play_player_card(card: Card) -> void:
 #	Turn into a player turn method
 #		Eventually make a function to calculate card cost - modifiers should change it
 	var card_cost: int = 1
@@ -46,27 +55,28 @@ func _on_deck_and_hand_card_played(card: Card) -> void:
 			"caster": $GameScreen/PlayerCharacter,
 			"targets": [$GameScreen/EnemyCharacter]
 		})
+	
+	transition_game_state()
 
-func check_game_valid() -> void:
+func transition_game_state() -> void:
 	if (enemy_character.health <= 0):
 		game_controller.transition(GameController.GameState.ROUND_WON)
 	elif (player_character.health <= 0):
 		game_controller.transition(GameController.GameState.GAMEOVER)
-	elif game_controller.current_state == GameController.GameState.VICTORY:
-		$CanvasLayer/VictoryOverlay.visible = true
-	elif game_controller.current_state == GameController.GameState.GAMEOVER:
-		$CanvasLayer/GameOverOverlay.visible = true
-	
-	game_controller.transition(GameController.GameState.ENEMY_TURN)
+	elif game_controller.current_state == GameController.GameState.ENEMY_TURN:
+		game_controller.transition(GameController.GameState.PLAYER_TURN)
+	elif game_controller.current_state == GameController.GameState.PLAYER_TURN:
+		game_controller.transition(GameController.GameState.ENEMY_TURN)
 
 
 func _on_create_card_button_pressed() -> void:
 	var card = generate_random_card()
 	player_character.add_card_to_hand(card)
 
-func _on_play_button_pressed() -> void:
-	if (!player_character.hand_is_empty()):
-		_on_deck_and_hand_card_played(player_character.remove_top_card())
+func _on_play_button_pressed() -> void:	
+	if (game_controller.current_state == GameController.GameState.PLAYER_TURN):
+		if (!player_character.hand_is_empty()):
+			play_player_card(player_character.remove_top_card())
 
 func _on_delete_card_button_pressed() -> void:
 	player_character.remove_selected_cards()

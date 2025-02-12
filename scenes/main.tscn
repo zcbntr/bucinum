@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dcupv7h1p5be4"]
+[gd_scene load_steps=8 format=3 uid="uid://dcupv7h1p5be4"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_s1fn5"]
 [ext_resource type="PackedScene" uid="uid://dlogf7dqymgon" path="res://scenes/player_character.tscn" id="2_dxoge"]
@@ -19,6 +19,13 @@ outline_size = 3
 outline_color = Color(0, 0, 0, 1)
 shadow_size = 2
 shadow_color = Color(0, 0, 0, 0.27451)
+
+[sub_resource type="LabelSettings" id="LabelSettings_wug7q"]
+font_size = 24
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 0.32549)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_s1fn5")
@@ -57,13 +64,32 @@ text = "Victory"
 label_settings = SubResource("LabelSettings_fyt5l")
 horizontal_alignment = 1
 
+[node name="RoundWonOverlay" type="ColorRect" parent="CanvasLayer"]
+visible = false
+offset_right = 640.0
+offset_bottom = 320.0
+color = Color(0.717647, 1, 1, 0.054902)
+
+[node name="Label" type="Label" parent="CanvasLayer/RoundWonOverlay"]
+layout_mode = 0
+offset_left = 250.0
+offset_top = 55.0
+offset_right = 384.0
+offset_bottom = 89.0
+text = "Round Won"
+label_settings = SubResource("LabelSettings_wug7q")
+horizontal_alignment = 1
+
 [node name="GameScreen" type="Node2D" parent="."]
 
 [node name="PlayerCharacter" parent="GameScreen" instance=ExtResource("2_dxoge")]
+position = Vector2(172, 121)
 
 [node name="EnemyCharacter" parent="GameScreen" instance=ExtResource("3_tay2c")]
+position = Vector2(513, 114)
 
 [node name="GameController" type="Node2D" parent="."]
+visible = false
 script = ExtResource("6_8xm4k")
 
 [node name="PlayUI" type="Node2D" parent="."]
@@ -89,6 +115,15 @@ offset_right = 109.0
 offset_bottom = 43.0
 text = "Create Card
 "
+
+[node name="StateLbl" type="Label" parent="."]
+offset_left = 279.0
+offset_top = 10.0
+offset_right = 382.0
+offset_bottom = 33.0
+text = "State:
+"
+horizontal_alignment = 1
 
 [connection signal="pressed" from="PlayUI/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="PlayUI/DeleteButton" to="." method="_on_delete_card_button_pressed"]
