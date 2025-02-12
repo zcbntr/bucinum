@@ -1,5 +1,6 @@
 extends Node2D
 
+@onready var card: Card = $".."
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -13,4 +14,4 @@ func _process(delta: float) -> void:
 
 func activate(game_state: Dictionary) -> void:
 	game_state.get("caster").spend_cards(1)
-	game_state.get("targets")[0].take_damage(1)
+	game_state.get("targets")[0].take_damage(card.card_damage)

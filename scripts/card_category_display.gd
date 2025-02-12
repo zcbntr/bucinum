@@ -1,15 +1,12 @@
-class_name EnemyCharacter extends Character
+@tool
+extends Node2D
 
-func play_turn() -> Card:
-	return hand.remove_top_card()
+@export var category_name: String = "<category_name>"
+@export var category_value: int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	health = 50
-	hand.angle_limit = 5
-	hand.hand_radius = 1050
-	pass # Replace with function body.
-
+	($CategoryLbl as Label).set_text(category_name + ":" + str(category_value))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

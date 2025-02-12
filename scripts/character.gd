@@ -1,7 +1,7 @@
 @tool
 class_name Character extends Node2D
 
-@export var max_health: int = 10
+@export var max_health: int = 100
 @export var health: int = max_health
 @export var max_armour: int = 100
 @export var armour: int = 0
