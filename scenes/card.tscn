@@ -43,6 +43,7 @@ action = NodePath("CardAction")
 texture = ExtResource("1_epeui")
 
 [node name="CostDisplay" type="Node2D" parent="."]
+visible = false
 
 [node name="CostBaseSprite" type="Sprite2D" parent="CostDisplay"]
 position = Vector2(25, -48)

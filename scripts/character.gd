@@ -3,6 +3,8 @@ class_name Character extends Node2D
 
 @export var max_health: int = 10
 @export var health: int = max_health
+@export var max_armour: int = 100
+@export var armour: int = 0
 @export var max_cards_per_round: int = 20
 @export var cards_left_to_play_in_round: int = max_cards_per_round
 
@@ -16,6 +18,11 @@ func update_healthbar():
 		($HealthBar as ProgressBar).max_value = max_health
 	if (($HealthBar as ProgressBar).value != health):
 		($HealthBar as ProgressBar).value = health
+
+func add_armour(_amount: int) -> void:
+	armour += _amount
+	if (armour > max_armour):
+		armour = max_armour
 
 func spend_cards(_amount: int) -> void:
 	cards_left_to_play_in_round -= _amount

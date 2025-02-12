@@ -28,6 +28,7 @@ signal mouse_exited(card: Card)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	$CostDisplay.visible = false
 	pass
 	
 func set_values(_name: String, _description: String, _cost: int, _damage: int, _stats: Dictionary) -> void:
