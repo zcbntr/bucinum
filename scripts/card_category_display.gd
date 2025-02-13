@@ -16,14 +16,18 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
-
 func _on_clickable_area_mouse_entered() -> void:
-	($CategoryLbl as Label).set_modulate(Color(0.4, 0.2, 0.4, 1))
-	
 	mouse_entered.emit(category_name)
 
-
 func _on_clickable_area_mouse_exited() -> void:
-	($CategoryLbl as Label).set_modulate(Color(0.8, 0.8, 0.8, 1))
-	
 	mouse_exited.emit(category_name)
+
+func highlight():
+	($CategoryLbl as Label).set_modulate(Color(0.4, 0.2, 0.4, 1))
+
+func unhighlight():
+	($CategoryLbl as Label).set_modulate(Color(0.8, 0.8, 0.8, 1))
+
+
+func _on_clickable_area_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	pass # Replace with function body.

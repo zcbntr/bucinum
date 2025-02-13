@@ -134,6 +134,7 @@ func _on_delete_card_button_pressed() -> void:
 func generate_random_card() -> Card:
 	var card = card_scene.instantiate()
 	var rng = RandomNumberGenerator.new()
+	var cardName = rng.randi_range(1, 100)
 	var cost = rng.randi_range(1, 10)
 	var damage = rng.randi_range(1, 10)
 	var stats: Dictionary = {
@@ -143,10 +144,11 @@ func generate_random_card() -> Card:
 		"Manners": rng.randi_range(1, 20),
 		"Age": rng.randi_range(1, 22)
 	}
-	card.set_values("Card Name", "Card Description", cost, damage, stats)
+	card.set_values("Card " + str(cardName), "Card Description", cost, damage, stats)
 	return card
 
 
-func _on_player_character_category_clicked(category: String) -> void:
+func _on_player_character_category_clicked(category: String, card: Card) -> void:
 	if game_controller.current_state == GameController.GameState.PLAYER_TURN:
-		play_player_card(player_character.hand.selected_category, player_character.remove_top_card())
+		if card == player_character.get_top_card():
+			play_player_card(category, player_character.remove_top_card())

@@ -2,8 +2,8 @@ class_name Card extends Node2D
 
 signal mouse_entered(card: Card)
 signal mouse_exited(card: Card)
-signal category_hovered(category: String)
-signal category_unhovered()
+signal category_hovered(category: String, card: Card)
+signal category_unhovered(card: Card)
 
 @onready var card_category_display_scene: PackedScene = preload("res://scenes/card_category_display.tscn")
 
@@ -42,6 +42,7 @@ func _ready() -> void:
 		cat_display.mouse_entered.connect(_on_category_mouse_entered)
 		cat_display.mouse_exited.connect(_on_category_mouse_exited)
 		add_child(cat_display)
+		category_displays.push_back(cat_display)
 
 
 func set_values(_name: String, _description: String, _cost: int, _damage: int, _stats: Dictionary) -> void:
@@ -88,6 +89,21 @@ func select():
 func highlight_select():
 	base_sprite.set_modulate(Color(0.5, 0.3, 1, 1))
 
+func highlight_category(category: String) -> void:
+	for category_display in category_displays:
+		if category_display.category_name == category:
+			category_display.highlight()
+			break
+
+func unhighlight_category(category: String) -> void:
+	for category_display in category_displays:
+		if category_display.category_name == category:
+			category_display.unhighlight()
+			break
+
+func unhighlight_all_categories() -> void:
+	for category_display in category_displays:
+		category_display.unhighlight()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -107,10 +123,10 @@ func activate(game_state: Dictionary):
 
 func _on_category_mouse_entered(_category: String) -> void:
 	hovered_category = _category
-	category_hovered.emit(_category)
+	category_hovered.emit(_category, self)
 
 
 func _on_category_mouse_exited(_category: String) -> void:
 	if (hovered_category == _category):
 		hovered_category = ""
-		category_unhovered.emit()
+		category_unhovered.emit(self)

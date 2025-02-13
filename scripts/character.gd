@@ -16,6 +16,9 @@ func remove_selected_cards() -> Array[Card]:
 func hand_is_empty() -> bool:
 	return hand.is_empty()
 
+func get_top_card() -> Card:
+	return hand.get_top_card()
+
 func remove_top_card() -> Card:
 	return hand.remove_top_card()
 

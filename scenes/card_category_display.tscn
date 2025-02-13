@@ -8,7 +8,7 @@ font_size = 8
 font_color = Color(0.306201, 0.298998, 0.284593, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_53vyf"]
-size = Vector2(78, 12)
+size = Vector2(80, 12)
 
 [node name="CategoryDisplay" type="Node2D"]
 script = ExtResource("1_uhauh")
@@ -24,9 +24,9 @@ metadata/_edit_use_anchors_ = true
 [node name="ClickableArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ClickableArea"]
-visible = false
 position = Vector2(39, 6)
 shape = SubResource("RectangleShape2D_53vyf")
 
+[connection signal="input_event" from="ClickableArea" to="." method="_on_clickable_area_input_event"]
 [connection signal="mouse_entered" from="ClickableArea" to="." method="_on_clickable_area_mouse_entered"]
 [connection signal="mouse_exited" from="ClickableArea" to="." method="_on_clickable_area_mouse_exited"]
