@@ -141,7 +141,15 @@ visible = false
 position = Vector2(320, 160)
 texture = ExtResource("5_cmw5k")
 
+[node name="ShopContinueButton" type="Button" parent="Shop"]
+offset_left = 543.0
+offset_top = 271.0
+offset_right = 622.0
+offset_bottom = 302.0
+text = "Continue"
+
 [connection signal="pressed" from="CanvasLayer/RoundWonOverlay/ContinueButton" to="." method="_on_continue_button_pressed"]
 [connection signal="category_clicked" from="GameScreen/PlayerCharacter" to="." method="_on_player_character_category_clicked"]
 [connection signal="pressed" from="PlayUI/DeleteButton" to="." method="_on_delete_card_button_pressed"]
 [connection signal="pressed" from="PlayUI/CreateCardButton" to="." method="_on_create_card_button_pressed"]
+[connection signal="pressed" from="Shop/ShopContinueButton" to="." method="_on_shop_continue_button_pressed"]
