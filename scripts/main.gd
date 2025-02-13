@@ -22,17 +22,30 @@ func _process(delta: float) -> void:
 	($StateLbl as Label).set_text(str(game_controller.current_state))
 	
 	if game_controller.current_state == GameController.GameState.ENEMY_TURN:
+		$PlayUI.visible = true
 #		AI Logic
 		play_enemy_card()
+
+	if game_controller.current_state == GameController.GameState.PLAYER_TURN:
+		$PlayUI.visible = true
 		
 	elif game_controller.current_state == GameController.GameState.ROUND_WON:
+		$PlayUI.visible = false
 		$CanvasLayer/RoundWonOverlay.visible = true
 		
 	elif game_controller.current_state == GameController.GameState.VICTORY:
+		$PlayUI.visible = false
 		$CanvasLayer/VictoryOverlay.visible = true
 		
 	elif game_controller.current_state == GameController.GameState.GAMEOVER:
+		$PlayUI.visible = false
 		$CanvasLayer/GameOverOverlay.visible = true
+	
+	elif game_controller.current_state == GameController.GameState.SHOP:
+		$GameScreen.visible = false
+		$PlayUI.visible = false
+		$CanvasLayer/RoundWonOverlay.visible = false
+		$Shop.visible = true
 
 
 func play_enemy_card() -> void:
@@ -152,3 +165,9 @@ func _on_player_character_category_clicked(category: String, card: Card) -> void
 	if game_controller.current_state == GameController.GameState.PLAYER_TURN:
 		if card == player_character.get_top_card():
 			play_player_card(category, player_character.remove_top_card())
+
+
+func _on_continue_button_pressed() -> void:
+	print("continue pressed")
+	if (game_controller.current_state == GameController.GameState.ROUND_WON):
+		game_controller.transition(GameController.GameState.SHOP)

@@ -42,7 +42,7 @@ func get_top_card() -> Card:
 
 # Physically add card to hand, positionally sort cards
 func add_card(_card: Card):
-	hand.push_front(_card)
+	hand.push_back(_card)
 	add_child(_card)
 	
 	_card.category_hovered.connect(_handle_card_category_hovered)
@@ -91,6 +91,7 @@ func fan_cards():
 	for i in range(hand.size() - 1, -1, -1):
 		_update_card_transform(hand[i], current_angle)
 		current_angle += card_spread
+		hand[i].z_index = hand.size() -1 - i
 
 # Get the position of a card for a given angle
 func get_card_position(_angle_in_deg: float) -> Vector2:
