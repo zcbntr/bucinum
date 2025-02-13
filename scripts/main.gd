@@ -128,11 +128,6 @@ func _on_create_card_button_pressed() -> void:
 	var card = generate_random_card()
 	player_character.add_card_to_hand(card)
 
-func _on_play_button_pressed() -> void:	
-	if (game_controller.current_state == GameController.GameState.PLAYER_TURN):
-		if (!player_character.hand_is_empty()):
-			play_player_card(player_character.hand.selected_category, player_character.remove_top_card())
-
 func _on_delete_card_button_pressed() -> void:
 	player_character.remove_selected_cards()
 
@@ -150,3 +145,8 @@ func generate_random_card() -> Card:
 	}
 	card.set_values("Card Name", "Card Description", cost, damage, stats)
 	return card
+
+
+func _on_player_character_category_clicked(category: String) -> void:
+	if game_controller.current_state == GameController.GameState.PLAYER_TURN:
+		play_player_card(player_character.hand.selected_category, player_character.remove_top_card())

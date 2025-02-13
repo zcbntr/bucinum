@@ -1,6 +1,8 @@
 @tool
 class_name Hand extends Node2D
 
+signal category_clicked(category: String)
+
 const ROT_VAR: int = 5
 const X_VAR: int = 4
 const Y_VAR: int = 4
@@ -118,6 +120,8 @@ func _input(event):
 				cards_selected.push_back(hand[highest_touched_index])
 			else:
 				cards_selected.remove_at(cards_selected.find(card_clicked))
+		elif (selected_category != ""):
+			category_clicked.emit(selected_category)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
