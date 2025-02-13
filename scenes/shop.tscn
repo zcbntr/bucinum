@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://bwd0glslcu6d7"]
+
+[ext_resource type="Texture2D" uid="uid://0sedsto8bd2n" path="res://sprites/shop-placeholder.png" id="1_aj807"]
+[ext_resource type="Script" path="res://scripts/shop.gd" id="1_ne3mh"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_p1kob"]
+font_size = 30
+font_color = Color(0.812276, 0.740413, 0, 1)
+outline_size = 2
+outline_color = Color(0.171039, 0.171039, 0.171039, 1)
+
+[node name="Shop" type="Node2D"]
+script = ExtResource("1_ne3mh")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(320, 160)
+texture = ExtResource("1_aj807")
+
+[node name="ShopContinueButton" type="Button" parent="."]
+offset_left = 543.0
+offset_top = 271.0
+offset_right = 622.0
+offset_bottom = 302.0
+text = "Continue"
+
+[node name="CardsSection" type="Node2D" parent="."]
+
+[node name="MoneyLbl" type="Label" parent="."]
+offset_left = 573.0
+offset_top = 19.0
+offset_right = 613.0
+offset_bottom = 61.0
+text = "$0"
+label_settings = SubResource("LabelSettings_p1kob")
+horizontal_alignment = 2
+
+[connection signal="pressed" from="ShopContinueButton" to="." method="_on_shop_continue_button_pressed"]

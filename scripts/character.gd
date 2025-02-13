@@ -25,7 +25,7 @@ func remove_top_card() -> Card:
 func add_card_to_hand(_card: Card) -> void:
 	hand.add_card(_card)
 
-func set_health_values(_health: int, _max_health: int) -> void:
+func set_health_values(_max_health: int, _health: int) -> void:
 	max_health = _max_health
 	health = _health
 	update_healthbar()

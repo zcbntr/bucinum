@@ -45,6 +45,19 @@ func _ready() -> void:
 		category_displays.push_back(cat_display)
 
 
+func show_cost() -> void:
+	$CostDisplay.visible = true
+
+func hide_cost() -> void:
+	$CostDisplay.visible = false
+
+func show_damage() -> void:
+	$DamageDisplay.visible = true
+
+func hide_damage() -> void:
+	$DamageDisplay.visible = false
+
+
 func set_values(_name: String, _description: String, _cost: int, _damage: int, _stats: Dictionary) -> void:
 	card_name = _name
 	card_description = _description

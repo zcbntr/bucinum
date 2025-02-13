@@ -121,21 +121,22 @@ func _ready() -> void:
 	pass # Replace with function body.
 
 func _input(event):
-	if event.is_action_pressed("mouse_click"):
-		if (!cards_touched.is_empty()):
-#			Get the rightmost touched card
-			var lowest_touched_index: int = hand.size()
-			for card in cards_touched:
-				lowest_touched_index = min(lowest_touched_index, hand.find(card))
-			var card_clicked = hand[lowest_touched_index]
-			
-#			Select the card. If its already selected unselect it
-			if (cards_selected.find(card_clicked) == -1):
-				cards_selected.push_back(hand[lowest_touched_index])
-			else:
-				cards_selected.remove_at(cards_selected.find(card_clicked))
-		elif (hovered_category != ""):
-			category_clicked.emit(hovered_category, hovered_category_card)
+	if (self.visible):
+		if event.is_action_pressed("mouse_click"):
+			if (!cards_touched.is_empty()):
+#				Get the rightmost touched card
+				var lowest_touched_index: int = hand.size()
+				for card in cards_touched:
+					lowest_touched_index = min(lowest_touched_index, hand.find(card))
+				var card_clicked = hand[lowest_touched_index]
+				
+	#			Select the card. If its already selected unselect it
+				if (cards_selected.find(card_clicked) == -1):
+					cards_selected.push_back(hand[lowest_touched_index])
+				else:
+					cards_selected.remove_at(cards_selected.find(card_clicked))
+			elif (hovered_category != ""):
+				category_clicked.emit(hovered_category, hovered_category_card)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

@@ -18,6 +18,8 @@ enum ComparisonResult {
 @onready var current_state: GameState = GameState.PLAYER_TURN
 @onready var comparison_history: Array[ComparisonResult]
 
+var money: int = 0
+
 func transition(next_state: GameState):
 	current_state = next_state
 	match current_state:
@@ -48,6 +50,14 @@ static func compare_cards(_category: String, _player_card: Card, _enemy_card: Ca
 	else:
 		return 2
 
+func add_money(_amount: int) -> void:
+	money += _amount
+
+func remove_money(_amount: int) -> void:
+	money -= _amount
+
+func get_money() -> int:
+	return money
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

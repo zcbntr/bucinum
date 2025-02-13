@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_s1fn5"]
 [ext_resource type="PackedScene" uid="uid://dlogf7dqymgon" path="res://scenes/player_character.tscn" id="2_dxoge"]
 [ext_resource type="PackedScene" uid="uid://dwc8y6tmbtg4b" path="res://scenes/enemy_character.tscn" id="3_tay2c"]
-[ext_resource type="Texture2D" uid="uid://0sedsto8bd2n" path="res://sprites/shop-placeholder.png" id="5_cmw5k"]
+[ext_resource type="PackedScene" uid="uid://bwd0glslcu6d7" path="res://scenes/shop.tscn" id="5_4k7ct"]
 [ext_resource type="Script" path="res://scripts/game_controller.gd" id="6_8xm4k"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_qrjun"]
@@ -134,22 +134,10 @@ text = "State:
 "
 horizontal_alignment = 1
 
-[node name="Shop" type="Node2D" parent="."]
-visible = false
-
-[node name="Sprite2D" type="Sprite2D" parent="Shop"]
-position = Vector2(320, 160)
-texture = ExtResource("5_cmw5k")
-
-[node name="ShopContinueButton" type="Button" parent="Shop"]
-offset_left = 543.0
-offset_top = 271.0
-offset_right = 622.0
-offset_bottom = 302.0
-text = "Continue"
+[node name="Shop" parent="." instance=ExtResource("5_4k7ct")]
 
 [connection signal="pressed" from="CanvasLayer/RoundWonOverlay/ContinueButton" to="." method="_on_continue_button_pressed"]
 [connection signal="category_clicked" from="GameScreen/PlayerCharacter" to="." method="_on_player_character_category_clicked"]
 [connection signal="pressed" from="PlayUI/DeleteButton" to="." method="_on_delete_card_button_pressed"]
 [connection signal="pressed" from="PlayUI/CreateCardButton" to="." method="_on_create_card_button_pressed"]
-[connection signal="pressed" from="Shop/ShopContinueButton" to="." method="_on_shop_continue_button_pressed"]
+[connection signal="exit_shop_pressed" from="Shop" to="." method="_on_shop_exit_shop_pressed"]

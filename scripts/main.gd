@@ -5,16 +5,23 @@ extends Node2D
 @export var player_character: Character
 @export var enemy_character: Character
 
-@onready var game_controller: GameController = $GameController
+@export var shop: Shop
+
+@export var game_controller: GameController
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	game_controller = $GameController
+	shop = $Shop
+	
 	load_player()
 	load_enemy()
 	
 #	Give player their initial cards
 	for n in 8:
 		player_character.add_card_to_hand(generate_random_card())
+	
+	game_controller.add_money(10)
 
 func load_player() -> void:
 	player_character = $GameScreen/PlayerCharacter
@@ -23,7 +30,7 @@ func load_player() -> void:
 
 func load_enemy() -> void:
 	enemy_character = $GameScreen/EnemyCharacter
-	enemy_character.set_health_values(40, 40)
+	enemy_character.set_health_values(15, 15)
 	for n in 8:
 		enemy_character.add_card_to_hand(generate_random_card())
 
@@ -93,6 +100,7 @@ func play_enemy_card() -> void:
 				})
 				
 			else:
+				print("tie")
 	#			Implement tie breaker system in the future
 	#			Currently just throw away cards
 				pass
@@ -127,6 +135,7 @@ func play_player_card(_category: String, _card: Card) -> void:
 					"targets": [$GameScreen/PlayerCharacter]
 				})
 			else:
+				print("tie")
 	#			Implement tie breaker system in the future
 	#			Currently just throw away cards
 				pass
@@ -145,6 +154,7 @@ func transition_game_state() -> void:
 		game_controller.transition(GameController.GameState.ENEMY_TURN)
 	elif game_controller.current_state == GameController.GameState.ROUND_WON:
 		game_controller.transition(GameController.GameState.SHOP)
+		shop.set_money(game_controller.get_money())
 	elif game_controller.current_state == GameController.GameState.SHOP:
 		game_controller.transition(GameController.GameState.PLAYER_TURN)
 		load_enemy()
@@ -186,6 +196,6 @@ func _on_continue_button_pressed() -> void:
 		transition_game_state()
 
 
-func _on_shop_continue_button_pressed() -> void:
+func _on_shop_exit_shop_pressed() -> void:
 	if (game_controller.current_state == GameController.GameState.SHOP):
 		transition_game_state()
