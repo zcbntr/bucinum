@@ -83,7 +83,7 @@ func play_enemy_card() -> void:
 			var rng = RandomNumberGenerator.new()
 			var category = enemy_card.stats.keys()[rng.randi_range(0, enemy_card.stats.keys().size() - 1)]
 			var player_card = player_character.remove_top_card()
-			var comparison_result = game_controller.compare_cards(category, player_card, enemy_card)
+			var comparison_result = GameController.compare_cards(category, player_card, enemy_card)
 			if comparison_result == GameController.ComparisonResult.PLAYER_WIN:
 				player_card.activate({
 					"caster": $GameScreen/PlayerCharacter,
@@ -120,7 +120,7 @@ func play_player_card(_category: String, _card: Card) -> void:
 			game_controller.push_comparison_result(GameController.ComparisonResult.PLAYER_WIN)
 		else:
 			var enemy_card = enemy_character.remove_top_card()
-			var comparison_result = game_controller.compare_cards(_category, _card, enemy_card)
+			var comparison_result = GameController.compare_cards(_category, _card, enemy_card)
 			if comparison_result == GameController.ComparisonResult.PLAYER_WIN:
 				_card.activate({
 					"caster": $GameScreen/PlayerCharacter,
@@ -153,7 +153,7 @@ func transition_game_state() -> void:
 	elif game_controller.current_state == GameController.GameState.ROUND_WON:
 		game_controller.transition(GameController.GameState.SHOP)
 		game_controller.add_money(10)
-		shop.set_money(game_controller.get_money())
+		shop.player_money = game_controller.get_money()
 	elif game_controller.current_state == GameController.GameState.SHOP:
 		game_controller.transition(GameController.GameState.PLAYER_TURN)
 		load_enemy()

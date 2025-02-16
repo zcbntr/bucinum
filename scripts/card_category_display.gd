@@ -27,7 +27,3 @@ func highlight():
 
 func unhighlight():
 	($CategoryLbl as Label).set_modulate(Color(0.8, 0.8, 0.8, 1))
-
-
-func _on_clickable_area_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-	pass # Replace with function body.

@@ -8,8 +8,6 @@ signal category_unhovered(card: Card)
 const card_scene: PackedScene = preload("res://scenes/card.tscn")
 const card_category_display_scene: PackedScene = preload("res://scenes/card_category_display.tscn")
 
-@export var action: Node2D
-
 @export var stats: Dictionary = {
 	"Cuteness": 99,
 	"Fluffyness": 99,
@@ -32,13 +30,14 @@ const card_category_display_scene: PackedScene = preload("res://scenes/card_cate
 @onready var base_sprite: Sprite2D = $BaseCardSprite
 @onready var category_displays: Array[Node2D]
 @onready var clickable_collision_area: CollisionShape2D = $ClickableArea/CollisionShape2D
+@onready var action: Node2D = $CardAction
 
 static func new_card(_name: String, _description: String, _cost: int, _damage: int, _stats: Dictionary) -> Card:
-	var new_card: Card = card_scene.instantiate()
+	var card: Card = card_scene.instantiate()
 	
-	new_card.set_values(_name, _description, _cost, _damage, _stats)
+	card.set_values(_name, _description, _cost, _damage, _stats)
 	
-	return new_card
+	return card
 
 
 # Called when the node enters the scene tree for the first time.
@@ -89,9 +88,6 @@ func set_card_description(_description: String) -> void:
 # Syncs the card's graphics with the card's data
 # Should only be run once the card is added to the scene tree otherwise the labels will be null
 func update_card_graphics() -> void:	
-	if !is_node_ready():
-		return
-	
 	name_lbl.set_text(card_name)
 	
 	cost_lbl.set_text(str(card_cost))

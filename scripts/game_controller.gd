@@ -44,14 +44,17 @@ func push_comparison_result(_result: ComparisonResult) -> void:
 
 static func compare_cards(_category: String, _player_card: Card, _enemy_card: Card) -> GameController.ComparisonResult:
 	if _player_card.stats.get(_category) > _enemy_card.stats.get(_category):
-		return 0
+		return GameController.ComparisonResult.PLAYER_WIN
 	elif _player_card.stats.get(_category) < _enemy_card.stats.get(_category):
-		return 1
+		return GameController.ComparisonResult.ENEMY_WIN
 	else:
-		return 2
+		return GameController.ComparisonResult.TIE
 
 func add_money(_amount: int) -> void:
 	money += _amount
+
+func set_money(_amount: int) -> void:
+	money = _amount
 
 func remove_money(_amount: int) -> void:
 	money -= _amount
