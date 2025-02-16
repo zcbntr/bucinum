@@ -13,7 +13,7 @@ func _ready() -> void:
 	($CategoryLbl as Label).set_text(category_name + ":" + str(category_value))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 
 func _on_clickable_area_mouse_entered() -> void:

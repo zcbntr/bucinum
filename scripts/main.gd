@@ -33,7 +33,7 @@ func load_enemy() -> void:
 		enemy_character.add_card_to_hand(generate_random_playable_card())
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	($StateLbl as Label).set_text(str(game_controller.current_state))
 	
 	if game_controller.current_state == GameController.GameState.ENEMY_TURN:

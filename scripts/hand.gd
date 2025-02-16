@@ -141,7 +141,7 @@ func _input(event):
 				category_clicked.emit(hovered_category, hovered_category_card)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	for i in range(0, cards.size()):
 		cards[i].unhighlight()
 		cards[i].set_card_name("Card " + str(i))
