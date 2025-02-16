@@ -2,7 +2,7 @@ class_name Shop extends Node2D
 
 signal exit_shop_pressed
 
-var player_money: int = 0
+@export var player_money: int = 0
 
 @export var cards: Array[Card]
 @export var upgrades: Array
@@ -19,9 +19,6 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	$MoneyLbl.set_text("$" + str(player_money))
 
-func set_money(_amount: int) -> void:
-	player_money = _amount
-
 
 func populate_shop() -> void:
 	generate_shop_cards()
@@ -29,9 +26,8 @@ func populate_shop() -> void:
 
 
 func generate_random_card() -> Card:
-	var card = card_scene.instantiate()
 	var rng = RandomNumberGenerator.new()
-	var cardName = rng.randi_range(1, 100)
+	var card_name = "Card " + str(rng.randi_range(1, 100))
 	var cost = rng.randi_range(1, 10)
 	var damage = rng.randi_range(1, 10)
 	var stats: Dictionary = {
@@ -41,13 +37,14 @@ func generate_random_card() -> Card:
 		"Manners": rng.randi_range(1, 20),
 		"Age": rng.randi_range(1, 22)
 	}
-	card.set_values("Card " + str(cardName), "Card Description", cost, damage, stats)
+	
+	var card = Card.new_card(card_name, "", cost, damage, stats)
 	return card
 
 
 func generate_shop_cards() -> void:
 	var generated_cards: Array[Card]
-	for i in range(0, 3):
+	for i in range(0, 4):
 		var card = generate_random_card()
 		card.show_cost()
 		generated_cards.push_back(card)

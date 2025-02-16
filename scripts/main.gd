@@ -19,9 +19,7 @@ func _ready() -> void:
 	
 #	Give player their initial cards
 	for n in 8:
-		player_character.add_card_to_hand(generate_random_card())
-	
-	game_controller.add_money(10)
+		player_character.add_card_to_hand(generate_random_playable_card())
 
 func load_player() -> void:
 	player_character = $GameScreen/PlayerCharacter
@@ -32,7 +30,7 @@ func load_enemy() -> void:
 	enemy_character = $GameScreen/EnemyCharacter
 	enemy_character.set_health_values(15, 15)
 	for n in 8:
-		enemy_character.add_card_to_hand(generate_random_card())
+		enemy_character.add_card_to_hand(generate_random_playable_card())
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -154,6 +152,7 @@ func transition_game_state() -> void:
 		game_controller.transition(GameController.GameState.ENEMY_TURN)
 	elif game_controller.current_state == GameController.GameState.ROUND_WON:
 		game_controller.transition(GameController.GameState.SHOP)
+		game_controller.add_money(10)
 		shop.set_money(game_controller.get_money())
 	elif game_controller.current_state == GameController.GameState.SHOP:
 		game_controller.transition(GameController.GameState.PLAYER_TURN)
@@ -162,14 +161,13 @@ func transition_game_state() -> void:
 
 
 func _on_create_card_button_pressed() -> void:
-	var card = generate_random_card()
+	var card = generate_random_playable_card()
 	player_character.add_card_to_hand(card)
 
 func _on_delete_card_button_pressed() -> void:
 	player_character.remove_selected_cards()
 
-func generate_random_card() -> Card:
-	var card = card_scene.instantiate()
+func generate_random_playable_card() -> PlayableCard:
 	var rng = RandomNumberGenerator.new()
 	var cardName = rng.randi_range(1, 100)
 	var cost = rng.randi_range(1, 10)
@@ -181,11 +179,12 @@ func generate_random_card() -> Card:
 		"Manners": rng.randi_range(1, 20),
 		"Age": rng.randi_range(1, 22)
 	}
-	card.set_values("Card " + str(cardName), "Card Description", cost, damage, stats)
+	
+	var card: PlayableCard = PlayableCard.new_card("Card " + str(cardName), "Card Description", cost, damage, stats)
 	return card
 
 
-func _on_player_character_category_clicked(category: String, card: Card) -> void:
+func _on_player_character_category_clicked(category: String, card: PlayableCard) -> void:
 	if game_controller.current_state == GameController.GameState.PLAYER_TURN:
 		if card == player_character.get_top_card():
 			play_player_card(category, player_character.remove_top_card())

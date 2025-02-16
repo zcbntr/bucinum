@@ -12,5 +12,5 @@ func _process(delta: float) -> void:
 	pass
 
 
-func _on_hand_category_clicked(category: String, card: Card) -> void:
+func _on_hand_category_clicked(category: String, card: PlayableCard) -> void:
 	category_clicked.emit(category, card)

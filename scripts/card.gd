@@ -5,7 +5,8 @@ signal mouse_exited(card: Card)
 signal category_hovered(category: String, card: Card)
 signal category_unhovered(card: Card)
 
-@onready var card_category_display_scene: PackedScene = preload("res://scenes/card_category_display.tscn")
+const card_scene: PackedScene = preload("res://scenes/card.tscn")
+const card_category_display_scene: PackedScene = preload("res://scenes/card_category_display.tscn")
 
 @export var action: Node2D
 
@@ -30,19 +31,23 @@ signal category_unhovered(card: Card)
 @onready var name_lbl: Label = $NameDisplay/NameLbl
 @onready var base_sprite: Sprite2D = $BaseCardSprite
 @onready var category_displays: Array[Node2D]
+@onready var clickable_collision_area: CollisionShape2D = $ClickableArea/CollisionShape2D
+
+static func new_card(_name: String, _description: String, _cost: int, _damage: int, _stats: Dictionary) -> Card:
+	var new_card: Card = card_scene.instantiate()
+	
+	new_card.set_values(_name, _description, _cost, _damage, _stats)
+	
+	return new_card
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	$CostDisplay.visible = false
-	for i in stats.keys().size():
-		var cat_display = card_category_display_scene.instantiate()
-		cat_display.category_name = stats.keys()[i]
-		cat_display.category_value = stats.values()[i]
-		cat_display.position = Vector2(-39, -12 + (14 * i))
-		cat_display.mouse_entered.connect(_on_category_mouse_entered)
-		cat_display.mouse_exited.connect(_on_category_mouse_exited)
-		add_child(cat_display)
-		category_displays.push_back(cat_display)
+	update_card_graphics()
+
+
+func set_clickable_area_size(_size: Vector2) -> void:
+	clickable_collision_area.shape.set_size(_size)
 
 
 func show_cost() -> void:
@@ -84,11 +89,26 @@ func set_card_description(_description: String) -> void:
 # Syncs the card's graphics with the card's data
 # Should only be run once the card is added to the scene tree otherwise the labels will be null
 func update_card_graphics() -> void:	
+	if !is_node_ready():
+		return
+	
+	name_lbl.set_text(card_name)
+	
 	cost_lbl.set_text(str(card_cost))
 	
 	damage_lbl.set_text(str(card_damage))
 	
-	name_lbl.set_text(card_name)
+	#	Create category displays for each stat
+	category_displays.clear()
+	for i in stats.keys().size():
+		var cat_display = card_category_display_scene.instantiate()
+		cat_display.category_name = stats.keys()[i]
+		cat_display.category_value = stats.values()[i]
+		cat_display.position = Vector2(-39, -12 + (14 * i))
+		cat_display.mouse_entered.connect(_on_category_mouse_entered)
+		cat_display.mouse_exited.connect(_on_category_mouse_exited)
+		add_child(cat_display)
+		category_displays.push_back(cat_display)
 
 func highlight():
 	base_sprite.set_modulate(Color(0.75, 0.6, 0.75, 1))
@@ -129,9 +149,6 @@ func _on_clickable_area_mouse_entered() -> void:
 
 func _on_clickable_area_mouse_exited() -> void:
 	mouse_exited.emit(self)
-
-func activate(game_state: Dictionary):
-	action.activate(game_state)
 
 
 func _on_category_mouse_entered(_category: String) -> void:

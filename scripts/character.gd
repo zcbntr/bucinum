@@ -1,4 +1,3 @@
-@tool
 class_name Character extends Node2D
 
 @export var max_health: int = 100
@@ -10,19 +9,19 @@ class_name Character extends Node2D
 
 @onready var hand: Hand = $Hand
 
-func remove_selected_cards() -> Array[Card]:
+func remove_selected_cards() -> Array[PlayableCard]:
 	return hand.remove_selected_cards()
 
 func hand_is_empty() -> bool:
 	return hand.is_empty()
 
-func get_top_card() -> Card:
+func get_top_card() -> PlayableCard:
 	return hand.get_top_card()
 
-func remove_top_card() -> Card:
+func remove_top_card() -> PlayableCard:
 	return hand.remove_top_card()
 
-func add_card_to_hand(_card: Card) -> void:
+func add_card_to_hand(_card: PlayableCard) -> void:
 	hand.add_card(_card)
 
 func set_health_values(_max_health: int, _health: int) -> void:
