@@ -49,8 +49,8 @@ func add_card(_card: PlayableCard):
 	
 	_card.category_hovered.connect(_handle_card_category_hovered)
 	_card.category_unhovered.connect(_handle_card_category_unhovered)
-	_card.mouse_entered.connect(_handle_card_touched)
-	_card.mouse_exited.connect(_handle_card_untouched)
+	_card.mouse_entered.connect(_handle_card_hovered)
+	_card.mouse_exited.connect(_handle_card_unhovered)
 	fan_cards()
 
 # Remove card by index from hand, positionally sort cards
@@ -140,11 +140,17 @@ func _input(event):
 			elif (hovered_category != ""):
 				category_clicked.emit(hovered_category, hovered_category_card)
 
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+#	Tool logic
+	if collision_shape.visible && (collision_shape.shape as CircleShape2D).radius != hand_radius:
+		(collision_shape.shape as CircleShape2D).set_radius(hand_radius)
+
+
+func update_hovered_card() -> void:
 	for i in range(0, cards.size()):
 		cards[i].unhighlight()
-		cards[i].set_card_name("Card " + str(i))
 	
 #	Update visuals to show touched card
 	var lowest_touched_index: int = cards.size()
@@ -161,10 +167,7 @@ func _process(_delta: float) -> void:
 				selected_card.highlight_select()
 			else:
 				selected_card.select()
-	
-#	Tool logic
-	if (collision_shape.shape as CircleShape2D).radius != hand_radius:
-		(collision_shape.shape as CircleShape2D).set_radius(hand_radius)
+
 
 # Update selected_category with the category hovered on the lowest card
 func update_selected_category() -> void:
@@ -189,11 +192,21 @@ func update_selected_category() -> void:
 	hovered_category_card = cards[lowest_card_category_touched_index]
 
 
-func _handle_card_category_hovered(category: String, card: PlayableCard):
+func _handle_card_hovered(card: PlayableCard) -> void:
+	cards_touched.push_back(card)
+	update_hovered_card()
+
+
+func _handle_card_unhovered(card: PlayableCard) -> void:
+	cards_touched.remove_at(cards.find(card))
+	update_hovered_card()
+
+
+func _handle_card_category_hovered(category: String, card: PlayableCard) -> void:
 	categories_of_cards_touched.get_or_add(card, category)
 	update_selected_category()
 	
 
-func _handle_card_category_unhovered(card: PlayableCard):
+func _handle_card_category_unhovered(card: PlayableCard) -> void:
 	categories_of_cards_touched.erase(card)
 	update_selected_category()
