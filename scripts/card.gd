@@ -85,6 +85,19 @@ func set_card_description(_description: String) -> void:
 	card_description = _description
 	update_card_graphics()
 
+func set_card_stats(_stats: Dictionary) -> void:
+	#	Create category displays for each stat
+	clear_category_displays()
+	for i in stats.keys().size():
+		var cat_display = card_category_display_scene.instantiate()
+		cat_display.category_name = stats.keys()[i]
+		cat_display.category_value = stats.values()[i]
+		cat_display.position = Vector2(-39, -12 + (14 * i))
+		cat_display.mouse_entered.connect(_on_category_mouse_entered)
+		cat_display.mouse_exited.connect(_on_category_mouse_exited)
+		add_child(cat_display)
+		category_displays.push_back(cat_display)
+
 # Syncs the card's graphics with the card's data
 # Should only be run once the card is added to the scene tree otherwise the labels will be null
 func update_card_graphics() -> void:	

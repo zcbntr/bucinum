@@ -27,3 +27,5 @@ grow_horizontal = 2
 grow_vertical = 2
 value = 100.0
 show_percentage = false
+
+[connection signal="category_clicked" from="Hand" to="." method="_on_hand_category_clicked"]
