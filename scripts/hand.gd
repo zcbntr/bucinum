@@ -198,7 +198,7 @@ func _handle_card_hovered(card: PlayableCard) -> void:
 
 
 func _handle_card_unhovered(card: PlayableCard) -> void:
-	cards_touched.remove_at(cards.find(card))
+	cards_touched.remove_at(cards_touched.find(card))
 	update_hovered_card()
 
 

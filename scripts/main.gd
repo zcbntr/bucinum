@@ -34,8 +34,6 @@ func load_enemy() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	($StateLbl as Label).set_text(str(game_controller.current_state))
-	
 	if game_controller.current_state == GameController.GameState.ENEMY_TURN:
 		$Shop.visible = false
 		$GameScreen.visible = true
@@ -43,7 +41,7 @@ func _process(_delta: float) -> void:
 #		AI Logic
 		play_enemy_card()
 
-	if game_controller.current_state == GameController.GameState.PLAYER_TURN:
+	elif game_controller.current_state == GameController.GameState.PLAYER_TURN:
 		$Shop.visible = false
 		$GameScreen.visible = true
 		$PlayUI.visible = true
@@ -158,6 +156,8 @@ func transition_game_state() -> void:
 		game_controller.transition(GameController.GameState.PLAYER_TURN)
 		load_enemy()
 		load_player()
+	
+	($StateLbl as Label).set_text(str(game_controller.current_state))
 
 
 func _on_create_card_button_pressed() -> void:

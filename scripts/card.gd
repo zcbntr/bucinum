@@ -95,7 +95,7 @@ func update_card_graphics() -> void:
 	damage_lbl.set_text(str(card_damage))
 	
 	#	Create category displays for each stat
-	category_displays.clear()
+	clear_category_displays()
 	for i in stats.keys().size():
 		var cat_display = card_category_display_scene.instantiate()
 		cat_display.category_name = stats.keys()[i]
@@ -105,6 +105,11 @@ func update_card_graphics() -> void:
 		cat_display.mouse_exited.connect(_on_category_mouse_exited)
 		add_child(cat_display)
 		category_displays.push_back(cat_display)
+
+func clear_category_displays() -> void:
+	for cd in category_displays:
+		cd.queue_free()
+	category_displays.clear()
 
 func highlight():
 	base_sprite.set_modulate(Color(0.75, 0.6, 0.75, 1))
@@ -136,7 +141,7 @@ func unhighlight_all_categories() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	update_card_graphics()
+	pass
 
 
 func _on_clickable_area_mouse_entered() -> void:
