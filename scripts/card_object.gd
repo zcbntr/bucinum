@@ -8,6 +8,8 @@ signal category_clicked(category: String, card: CardObject)
 signal card_selected(card: CardObject)
 signal card_unselected
 
+static var hovered_cards: Array[CardObject]
+
 static var card_scene: PackedScene = preload("res://scenes/card_object.tscn")
 static var card_category_display_scene: PackedScene = preload("res://scenes/card_category_display.tscn")
 
@@ -209,14 +211,32 @@ func unhighlight_all_categories() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	pass
+	
+
+static func rehighlight_hovered_card() -> void:
+	if (hovered_cards.is_empty()):
+		return
+	
+	var top_card_index = -1
+	var top_card_z_index = -1
+	for i in range(0, hovered_cards.size()):
+		hovered_cards[i].set_unhovered()
+		if hovered_cards[i].z_index > top_card_z_index:
+			top_card_index = i
+			top_card_z_index = hovered_cards[i].z_index
+	
+	hovered_cards[top_card_index].set_hovered()
 
 
 func _on_clickable_area_mouse_entered() -> void:
-	set_hovered()
+	hovered_cards.push_back(self)
+	rehighlight_hovered_card()
 
 
 func _on_clickable_area_mouse_exited() -> void:
+	hovered_cards.remove_at(hovered_cards.find(self))
 	set_unhovered()
+	rehighlight_hovered_card()
 
 
 func _on_category_mouse_entered(_category: String) -> void:
