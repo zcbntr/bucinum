@@ -9,25 +9,29 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	shop = $Shop
+	get_parent().get_viewport().set_physics_object_picking_sort(true)
 	
 	load_player()
 	load_enemy()
 	
 #	Give player their initial cards
 	for n in 8:
-		player_character.add_card_to_hand(generate_random_card())
+		player_character.add_card_to_hand(CardObject.generate_random_card())
+	
+	shop = $Shop
+	shop.player_hand = player_character.get_hand()
 
 func load_player() -> void:
 	player_character = $GameScreen/PlayerCharacter
 	player_character.set_health_values(50, 50)
+	player_character.category_clicked.connect(_on_player_character_category_clicked)
 
 
 func load_enemy() -> void:
 	enemy_character = $GameScreen/EnemyCharacter
 	enemy_character.set_health_values(15, 15)
-	for n in 8:
-		enemy_character.add_card_to_hand(generate_random_card())
+	for n in 10:
+		enemy_character.add_card_to_hand(CardObject.generate_random_card())
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -158,27 +162,11 @@ func transition_game_state() -> void:
 
 
 func _on_create_card_button_pressed() -> void:
-	var card = generate_random_card()
+	var card = CardObject.generate_random_card()
 	player_character.add_card_to_hand(card)
 
 func _on_delete_card_button_pressed() -> void:
 	player_character.remove_selected_cards()
-
-func generate_random_card() -> CardObject:
-	var rng = RandomNumberGenerator.new()
-	var cardName = rng.randi_range(1, 100)
-	var cost = rng.randi_range(1, 10)
-	var damage = rng.randi_range(1, 10)
-	var stats: Dictionary = {
-		"Cuteness": rng.randi_range(1, 100),
-		"Fluffyness": rng.randi_range(1, 100),
-		"Mischief": rng.randi_range(1, 10),
-		"Manners": rng.randi_range(1, 20),
-		"Age": rng.randi_range(1, 22)
-	}
-	
-	var card: CardObject = CardObject.new_card("Card " + str(cardName), "Card Description", cost, damage, stats)
-	return card
 
 
 func _on_player_character_category_clicked(category: String, card: CardObject) -> void:

@@ -60,9 +60,9 @@ static func push_comparison_result(_result: ComparisonResult) -> void:
 	comparison_history.push_front(_result)
 
 static func compare_cards(_category: String, _player_card: CardObject, _enemy_card: CardObject) -> GameController.ComparisonResult:
-	if _player_card.stats.get(_category) > _enemy_card.stats.get(_category):
+	if _player_card.card_stats.get(_category) > _enemy_card.card_stats.get(_category):
 		return ComparisonResult.PLAYER_WIN
-	elif _player_card.stats.get(_category) < _enemy_card.stats.get(_category):
+	elif _player_card.card_stats.get(_category) < _enemy_card.card_stats.get(_category):
 		return ComparisonResult.ENEMY_WIN
 	else:
 		return ComparisonResult.TIE

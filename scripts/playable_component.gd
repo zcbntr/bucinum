@@ -10,7 +10,7 @@ func _exit_tree() -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	owner.set_clickable_area_size(Vector2(78, 50))
+	pass
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

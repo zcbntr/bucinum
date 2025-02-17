@@ -9,6 +9,9 @@ class_name Character extends Node2D
 
 @onready var hand: Hand = $Hand
 
+func get_hand() -> Hand:
+	return hand
+
 func remove_selected_cards() -> Array[CardObject]:
 	return hand.remove_selected_cards()
 

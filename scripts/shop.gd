@@ -4,8 +4,7 @@ signal exit_shop_pressed
 
 @export var cards: Array[CardObject]
 @export var upgrades: Array
-
-@onready var card_scene: PackedScene = preload("res://scenes/card_object.tscn")
+@export var player_hand: Hand
 
 
 # Called when the node enters the scene tree for the first time.
@@ -28,7 +27,7 @@ func generate_shop_cards() -> void:
 	for i in range(0, 4):
 		var card = CardObject.generate_random_card()
 		card.show_cost()
-		card.card_clicked.connect(_on_card_clicked)
+		card.card_selected.connect(_on_card_selected)
 		generated_cards.push_back(card)
 		$CardsSection.add_child(card)
 	cards = generated_cards
@@ -46,10 +45,10 @@ func _on_shop_continue_button_pressed() -> void:
 	exit_shop_pressed.emit()
 
 
-func _on_card_clicked(_card: CardObject) -> void:
+func _on_card_selected(_card: CardObject) -> void:
 #	Add card to deck, decrement money
 	if GameController.get_money() >= _card.card_cost:
 		_card.visible = false
 		cards.remove_at(cards.find(_card))
-		GameController.add_card_to_player_hand(_card)
+		player_hand.add_card(_card)
 		lay_out_cards()

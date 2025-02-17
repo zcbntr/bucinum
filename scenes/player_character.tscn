@@ -8,7 +8,7 @@
 script = ExtResource("1_c536f")
 
 [node name="Hand" parent="." instance=ExtResource("2_iomj6")]
-position = Vector2(160, 1100)
+position = Vector2(120, 104)
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
 texture = ExtResource("3_ia8ty")

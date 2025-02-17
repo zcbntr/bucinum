@@ -22,7 +22,7 @@ outline_size = 3
 outline_color = Color(0.263618, 0.504675, 0.943998, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hxmh3"]
-size = Vector2(78, 50)
+size = Vector2(80, 128)
 
 [node name="Card" type="Node2D"]
 script = ExtResource("1_wshl8")
@@ -78,7 +78,6 @@ texture = ExtResource("4_gsycv")
 [node name="ClickableArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ClickableArea"]
-position = Vector2(0, -38)
 shape = SubResource("RectangleShape2D_hxmh3")
 
 [connection signal="input_event" from="ClickableArea" to="." method="_on_clickable_area_input_event"]
