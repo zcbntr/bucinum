@@ -2,12 +2,10 @@ class_name Shop extends Node2D
 
 signal exit_shop_pressed
 
-@export var player_money: int = 0
-
-@export var cards: Array[Card]
+@export var cards: Array[CardObject]
 @export var upgrades: Array
 
-@onready var card_scene: PackedScene = preload("res://scenes/card.tscn")
+@onready var card_scene: PackedScene = preload("res://scenes/card_object.tscn")
 
 
 # Called when the node enters the scene tree for the first time.
@@ -17,7 +15,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	$MoneyLbl.set_text("$" + str(player_money))
+	$MoneyLbl.set_text("$" + str(GameController.money))
 
 
 func populate_shop() -> void:
@@ -25,35 +23,19 @@ func populate_shop() -> void:
 	lay_out_cards()
 
 
-func generate_random_card() -> Card:
-	var rng = RandomNumberGenerator.new()
-	var card_name = "Card " + str(rng.randi_range(1, 100))
-	var cost = rng.randi_range(1, 10)
-	var damage = rng.randi_range(1, 10)
-	var stats: Dictionary = {
-		"Cuteness": rng.randi_range(1, 100),
-		"Fluffyness": rng.randi_range(1, 100),
-		"Mischief": rng.randi_range(1, 10),
-		"Manners": rng.randi_range(1, 20),
-		"Age": rng.randi_range(1, 22)
-	}
-	
-	var card = Card.new_card(card_name, "", cost, damage, stats)
-	return card
-
-
 func generate_shop_cards() -> void:
-	var generated_cards: Array[Card]
+	var generated_cards: Array[CardObject]
 	for i in range(0, 4):
-		var card = generate_random_card()
+		var card = CardObject.generate_random_card()
 		card.show_cost()
+		card.card_clicked.connect(_on_card_clicked)
 		generated_cards.push_back(card)
 		$CardsSection.add_child(card)
 	cards = generated_cards
 
-func add_card_to_shop(_card: Card) -> void:
+func add_card_to_shop(_card: CardObject) -> void:
 	cards.push_back(_card)
-	
+
 
 func lay_out_cards() -> void:
 	for i in range(0, cards.size()):
@@ -62,3 +44,12 @@ func lay_out_cards() -> void:
 
 func _on_shop_continue_button_pressed() -> void:
 	exit_shop_pressed.emit()
+
+
+func _on_card_clicked(_card: CardObject) -> void:
+#	Add card to deck, decrement money
+	if GameController.get_money() >= _card.card_cost:
+		_card.visible = false
+		cards.remove_at(cards.find(_card))
+		GameController.add_card_to_player_hand(_card)
+		lay_out_cards()

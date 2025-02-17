@@ -15,12 +15,29 @@ enum ComparisonResult {
 	TIE
 }
 
-@onready var current_state: GameState = GameState.PLAYER_TURN
-@onready var comparison_history: Array[ComparisonResult]
+static var current_state: GameState = GameState.PLAYER_TURN
+static var comparison_history: Array[ComparisonResult]
 
-var money: int = 0
+static var player_hand: Hand
+static var enemy_hand: Hand
+static var money: int = 0
 
-func transition(next_state: GameState):
+static func get_player_hand() -> Hand:
+	return player_hand
+
+static func add_card_to_player_hand(_card: CardObject) -> void:
+	player_hand.add_card(_card)
+
+static func remove_card_from_player_hand(_card: CardObject) -> void:
+	player_hand.remove_card(player_hand.find(_card))
+
+static func add_card_to_enemy_hand(_card: CardObject) -> void:
+	enemy_hand.add_card(_card)
+
+static func remove_card_from_enemy_hand(_card: CardObject) -> void:
+	enemy_hand.remove_card(enemy_hand.find(_card))
+
+static func transition(next_state: GameState):
 	current_state = next_state
 	match current_state:
 		GameState.PLAYER_TURN:
@@ -36,30 +53,30 @@ func transition(next_state: GameState):
 		GameState.SHOP:
 			pass
 
-func get_prev_comparison_result() -> ComparisonResult:
+static func get_prev_comparison_result() -> ComparisonResult:
 	return comparison_history.front()
 
-func push_comparison_result(_result: ComparisonResult) -> void:
+static func push_comparison_result(_result: ComparisonResult) -> void:
 	comparison_history.push_front(_result)
 
-static func compare_cards(_category: String, _player_card: Card, _enemy_card: Card) -> GameController.ComparisonResult:
+static func compare_cards(_category: String, _player_card: CardObject, _enemy_card: CardObject) -> GameController.ComparisonResult:
 	if _player_card.stats.get(_category) > _enemy_card.stats.get(_category):
-		return GameController.ComparisonResult.PLAYER_WIN
+		return ComparisonResult.PLAYER_WIN
 	elif _player_card.stats.get(_category) < _enemy_card.stats.get(_category):
-		return GameController.ComparisonResult.ENEMY_WIN
+		return ComparisonResult.ENEMY_WIN
 	else:
-		return GameController.ComparisonResult.TIE
+		return ComparisonResult.TIE
 
-func add_money(_amount: int) -> void:
+static func add_money(_amount: int) -> void:
 	money += _amount
 
-func set_money(_amount: int) -> void:
+static func set_money(_amount: int) -> void:
 	money = _amount
 
-func remove_money(_amount: int) -> void:
+static func remove_money(_amount: int) -> void:
 	money -= _amount
 
-func get_money() -> int:
+static func get_money() -> int:
 	return money
 
 # Called when the node enters the scene tree for the first time.

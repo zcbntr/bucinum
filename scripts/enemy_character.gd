@@ -1,6 +1,6 @@
 class_name EnemyCharacter extends Character
 
-func play_turn() -> Card:
+func play_turn() -> CardObject:
 	return hand.remove_top_card()
 
 # Called when the node enters the scene tree for the first time.

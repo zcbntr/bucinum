@@ -135,9 +135,8 @@ text = "State:
 horizontal_alignment = 1
 
 [node name="Shop" parent="." instance=ExtResource("5_4k7ct")]
+upgrades = []
 
 [connection signal="pressed" from="CanvasLayer/RoundWonOverlay/ContinueButton" to="." method="_on_continue_button_pressed"]
-[connection signal="category_clicked" from="GameScreen/PlayerCharacter" to="." method="_on_player_character_category_clicked"]
 [connection signal="pressed" from="PlayUI/DeleteButton" to="." method="_on_delete_card_button_pressed"]
 [connection signal="pressed" from="PlayUI/CreateCardButton" to="." method="_on_create_card_button_pressed"]
-[connection signal="exit_shop_pressed" from="Shop" to="." method="_on_shop_exit_shop_pressed"]

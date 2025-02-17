@@ -1,12 +1,16 @@
-class_name Card extends Node2D
+class_name CardObject extends Node2D
 
-signal mouse_entered(card: Card)
-signal mouse_exited(card: Card)
-signal category_hovered(category: String, card: Card)
-signal category_unhovered(card: Card)
+signal mouse_entered(card: CardObject)
+signal mouse_exited(card: CardObject)
+signal category_hovered(category: String, card: CardObject)
+signal category_unhovered(card: CardObject)
+signal card_clicked(card: CardObject)
 
-const card_scene: PackedScene = preload("res://scenes/card.tscn")
-const card_category_display_scene: PackedScene = preload("res://scenes/card_category_display.tscn")
+static var card_scene: PackedScene = preload("res://scenes/card_object.tscn")
+static var card_category_display_scene: PackedScene = preload("res://scenes/card_category_display.tscn")
+
+static var playable_component_scene: PackedScene = preload("res://scenes/playable_component.tscn")
+static var action_component_scene: PackedScene = preload("res://scenes/action_component.tscn")
 
 @export var stats: Dictionary = {
 	"Cuteness": 99,
@@ -32,12 +36,38 @@ const card_category_display_scene: PackedScene = preload("res://scenes/card_cate
 @onready var clickable_collision_area: CollisionShape2D = $ClickableArea/CollisionShape2D
 @onready var action: Node2D = $CardAction
 
-static func new_card(_name: String, _description: String, _cost: int, _damage: int, _stats: Dictionary) -> Card:
-	var card: Card = card_scene.instantiate()
+static func new_card(_name: String, _description: String, _cost: int, _damage: int, _stats: Dictionary) -> CardObject:
+	var card: CardObject = card_scene.instantiate()
 	
 	card.set_values(_name, _description, _cost, _damage, _stats)
 	
 	return card
+
+
+static func generate_random_card() -> CardObject:
+	var rng = RandomNumberGenerator.new()
+	var card_name = "Card " + str(rng.randi_range(1, 100))
+	var cost = rng.randi_range(1, 10)
+	var damage = rng.randi_range(1, 10)
+	var stats: Dictionary = {
+		"Cuteness": rng.randi_range(1, 100),
+		"Fluffyness": rng.randi_range(1, 100),
+		"Mischief": rng.randi_range(1, 10),
+		"Manners": rng.randi_range(1, 20),
+		"Age": rng.randi_range(1, 22)
+	}
+	
+	var card = CardObject.new_card(card_name, "", cost, damage, stats)
+	return card
+
+
+func make_playable() -> void:
+	var playable_component: PlayableComponent = playable_component_scene.instantiate()
+	add_child(playable_component)
+
+func make_actionable() -> void:
+	var action_component: ActionComponent = action_component_scene.instantiate()
+	add_child(action_component)
 
 
 # Called when the node enters the scene tree for the first time.
@@ -174,3 +204,8 @@ func _on_category_mouse_exited(_category: String) -> void:
 	if (hovered_category == _category):
 		hovered_category = ""
 		category_unhovered.emit(self)
+
+
+func _on_clickable_area_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	if event.is_action_pressed("mouse_click"):
+		card_clicked.emit(self)

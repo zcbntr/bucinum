@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://31ljedv5mxl0"]
+
+[ext_resource type="Script" path="res://scripts/playable_component.gd" id="1_qgi8n"]
+
+[node name="PlayableCard" type="Node2D"]
+script = ExtResource("1_qgi8n")

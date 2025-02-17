@@ -1,10 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://31ljedv5mxl0"]
+[gd_scene load_steps=9 format=3 uid="uid://bx5c4krg53dfq"]
 
-[ext_resource type="Script" path="res://scripts/playable_card.gd" id="1_1fc6c"]
-[ext_resource type="Texture2D" uid="uid://olm70ph31u5g" path="res://sprites/card-placeholder.png" id="2_t1cyv"]
-[ext_resource type="Texture2D" uid="uid://rdmrhc6lahfq" path="res://sprites/coin-placeholder.png" id="3_nknmf"]
-[ext_resource type="Texture2D" uid="uid://bdiw6mgjloxjw" path="res://sprites/damage-placeholder.png" id="4_exbba"]
-[ext_resource type="Script" path="res://scripts/card_action.gd" id="5_i37si"]
+[ext_resource type="Script" path="res://scripts/card_object.gd" id="1_wshl8"]
+[ext_resource type="Texture2D" uid="uid://olm70ph31u5g" path="res://sprites/card-placeholder.png" id="2_xq6cf"]
+[ext_resource type="Texture2D" uid="uid://rdmrhc6lahfq" path="res://sprites/coin-placeholder.png" id="3_xwi7l"]
+[ext_resource type="Texture2D" uid="uid://bdiw6mgjloxjw" path="res://sprites/damage-placeholder.png" id="4_gsycv"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_6a1tc"]
 font_color = Color(0.984314, 0.94902, 0.211765, 1)
@@ -25,18 +24,18 @@ outline_color = Color(0.263618, 0.504675, 0.943998, 1)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hxmh3"]
 size = Vector2(78, 50)
 
-[node name="PlayableCard" type="Node2D"]
-script = ExtResource("1_1fc6c")
+[node name="Card" type="Node2D"]
+script = ExtResource("1_wshl8")
 
 [node name="BaseCardSprite" type="Sprite2D" parent="."]
-texture = ExtResource("2_t1cyv")
+texture = ExtResource("2_xq6cf")
 
 [node name="CostDisplay" type="Node2D" parent="."]
 visible = false
 
 [node name="CostBaseSprite" type="Sprite2D" parent="CostDisplay"]
 position = Vector2(25, -48)
-texture = ExtResource("3_nknmf")
+texture = ExtResource("3_xwi7l")
 
 [node name="CostLbl" type="Label" parent="CostDisplay"]
 offset_left = -3.0
@@ -74,7 +73,7 @@ label_settings = SubResource("LabelSettings_4oqj5")
 
 [node name="DamageBaseSprite" type="Sprite2D" parent="DamageDisplay"]
 position = Vector2(-25, -48)
-texture = ExtResource("4_exbba")
+texture = ExtResource("4_gsycv")
 
 [node name="ClickableArea" type="Area2D" parent="."]
 
@@ -82,8 +81,6 @@ texture = ExtResource("4_exbba")
 position = Vector2(0, -38)
 shape = SubResource("RectangleShape2D_hxmh3")
 
-[node name="CardAction" type="Node2D" parent="."]
-script = ExtResource("5_i37si")
-
+[connection signal="input_event" from="ClickableArea" to="." method="_on_clickable_area_input_event"]
 [connection signal="mouse_entered" from="ClickableArea" to="." method="_on_clickable_area_mouse_entered"]
 [connection signal="mouse_exited" from="ClickableArea" to="." method="_on_clickable_area_mouse_exited"]

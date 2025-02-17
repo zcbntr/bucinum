@@ -5,9 +5,7 @@ const ROT_VAR: int = 5
 const X_VAR: int = 4
 const Y_VAR: int = 4
 
-@onready var playable_card_scene: PackedScene = preload("res://scenes/playable_card.tscn")
-
-signal category_clicked(category: String, card: PlayableCard)
+signal category_clicked(category: String, card: CardObject)
 
 @export var hand_radius: int = 1000
 # Cards only spread in 20 degree arc
@@ -18,17 +16,17 @@ signal category_clicked(category: String, card: PlayableCard)
 @onready var collision_shape: CollisionShape2D = $DebugCircle
 
 var hovered_category: String
-var hovered_category_card: PlayableCard
-var cards: Array[PlayableCard] = []
-var cards_touched: Array[PlayableCard] = []
+var hovered_category_card: CardObject
+var cards: Array[CardObject] = []
+var cards_touched: Array[CardObject] = []
 var categories_of_cards_touched: Dictionary
-var cards_selected: Array[PlayableCard] = []
+var cards_selected: Array[CardObject] = []
 
 func is_empty() -> bool:
 	return cards.is_empty()
 
 # Removes card at front of queue - right most card in hand
-func remove_top_card() -> PlayableCard:
+func remove_top_card() -> CardObject:
 	if (is_empty()):
 		return null
 	
@@ -36,14 +34,14 @@ func remove_top_card() -> PlayableCard:
 	remove_card(0)
 	return card
 
-func get_top_card() -> PlayableCard:
+func get_top_card() -> CardObject:
 	if (is_empty()):
 		return null
 	
 	return cards[0]
 
 # Physically add card to hand, positionally sort cards
-func add_card(_card: PlayableCard):
+func add_card(_card: CardObject):
 	cards.push_back(_card)
 	add_child(_card)
 	
@@ -54,7 +52,7 @@ func add_card(_card: PlayableCard):
 	fan_cards()
 
 # Remove card by index from hand, positionally sort cards
-func remove_card(_index: int) -> PlayableCard:
+func remove_card(_index: int) -> CardObject:
 	var removing_card = cards[_index]
 	
 	var touched_card_index = cards_touched.find(removing_card)
@@ -75,8 +73,8 @@ func remove_card(_index: int) -> PlayableCard:
 	
 	return removing_card
 
-func remove_selected_cards() -> Array[PlayableCard]:
-	var removing_cards: Array[PlayableCard] = []
+func remove_selected_cards() -> Array[CardObject]:
+	var removing_cards: Array[CardObject] = []
 	
 	while !cards_selected.is_empty():
 		var card_index = cards.find(cards_selected[0])
@@ -102,7 +100,7 @@ func get_card_position(_angle_in_deg: float) -> Vector2:
 	
 	return Vector2(int(x), int(y))
 
-func _update_card_transform(card: Card, _angle_in_deg: float):
+func _update_card_transform(card: CardObject, _angle_in_deg: float):
 #	Random variation
 	var rng = RandomNumberGenerator.new()
 	var x_offset = rng.randf_range(-0.5 * X_VAR, 0.5 * X_VAR)
@@ -112,10 +110,10 @@ func _update_card_transform(card: Card, _angle_in_deg: float):
 	card.set_position(get_card_position(_angle_in_deg) + Vector2(int(x_offset), int(y_offset)))
 	card.set_rotation(deg_to_rad(_angle_in_deg + 90 + rot_offset))
 
-func _handle_card_touched(_card: PlayableCard) -> void:
+func _handle_card_touched(_card: CardObject) -> void:
 	cards_touched.push_back(_card)
 
-func _handle_card_untouched(_card: PlayableCard) -> void:
+func _handle_card_untouched(_card: CardObject) -> void:
 	cards_touched.remove_at(cards_touched.find(_card))
 
 # Called when the node enters the scene tree for the first time.
@@ -192,21 +190,21 @@ func update_selected_category() -> void:
 	hovered_category_card = cards[lowest_card_category_touched_index]
 
 
-func _handle_card_hovered(card: PlayableCard) -> void:
+func _handle_card_hovered(card: CardObject) -> void:
 	cards_touched.push_back(card)
 	update_hovered_card()
 
 
-func _handle_card_unhovered(card: PlayableCard) -> void:
+func _handle_card_unhovered(card: CardObject) -> void:
 	cards_touched.remove_at(cards_touched.find(card))
 	update_hovered_card()
 
 
-func _handle_card_category_hovered(category: String, card: PlayableCard) -> void:
+func _handle_card_category_hovered(category: String, card: CardObject) -> void:
 	categories_of_cards_touched.get_or_add(card, category)
 	update_selected_category()
 	
 
-func _handle_card_category_unhovered(card: PlayableCard) -> void:
+func _handle_card_category_unhovered(card: CardObject) -> void:
 	categories_of_cards_touched.erase(card)
 	update_selected_category()

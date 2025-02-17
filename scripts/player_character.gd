@@ -1,6 +1,6 @@
 class_name PlayerCharacter extends Character
 
-signal category_clicked(category: String, card: Card)
+signal category_clicked(category: String, card: CardObject)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -12,5 +12,5 @@ func _process(_delta: float) -> void:
 	pass
 
 
-func _on_hand_category_clicked(category: String, card: PlayableCard) -> void:
+func _on_hand_category_clicked(category: String, card: CardObject) -> void:
 	category_clicked.emit(category, card)

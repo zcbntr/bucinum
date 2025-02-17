@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var card_scene: PackedScene = preload("res://scenes/card.tscn")
+@onready var card_scene: PackedScene = preload("res://scenes/card_object.tscn")
 
 @export var player_character: Character
 @export var enemy_character: Character
@@ -19,7 +19,7 @@ func _ready() -> void:
 	
 #	Give player their initial cards
 	for n in 8:
-		player_character.add_card_to_hand(generate_random_playable_card())
+		player_character.add_card_to_hand(generate_random_card())
 
 func load_player() -> void:
 	player_character = $GameScreen/PlayerCharacter
@@ -30,7 +30,7 @@ func load_enemy() -> void:
 	enemy_character = $GameScreen/EnemyCharacter
 	enemy_character.set_health_values(15, 15)
 	for n in 8:
-		enemy_character.add_card_to_hand(generate_random_playable_card())
+		enemy_character.add_card_to_hand(generate_random_card())
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -105,7 +105,7 @@ func play_enemy_card() -> void:
 	transition_game_state()
 
 
-func play_player_card(_category: String, _card: Card) -> void:
+func play_player_card(_category: String, _card: CardObject) -> void:
 	if (!player_character.hand_is_empty()):
 		
 #		If player has no cards then the enemy just plays theirs
@@ -161,13 +161,13 @@ func transition_game_state() -> void:
 
 
 func _on_create_card_button_pressed() -> void:
-	var card = generate_random_playable_card()
+	var card = generate_random_card()
 	player_character.add_card_to_hand(card)
 
 func _on_delete_card_button_pressed() -> void:
 	player_character.remove_selected_cards()
 
-func generate_random_playable_card() -> PlayableCard:
+func generate_random_card() -> CardObject:
 	var rng = RandomNumberGenerator.new()
 	var cardName = rng.randi_range(1, 100)
 	var cost = rng.randi_range(1, 10)
@@ -180,11 +180,11 @@ func generate_random_playable_card() -> PlayableCard:
 		"Age": rng.randi_range(1, 22)
 	}
 	
-	var card: PlayableCard = PlayableCard.new_card("Card " + str(cardName), "Card Description", cost, damage, stats)
+	var card: CardObject = CardObject.new_card("Card " + str(cardName), "Card Description", cost, damage, stats)
 	return card
 
 
-func _on_player_character_category_clicked(category: String, card: PlayableCard) -> void:
+func _on_player_character_category_clicked(category: String, card: CardObject) -> void:
 	if game_controller.current_state == GameController.GameState.PLAYER_TURN:
 		if card == player_character.get_top_card():
 			play_player_card(category, player_character.remove_top_card())

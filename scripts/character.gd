@@ -9,19 +9,19 @@ class_name Character extends Node2D
 
 @onready var hand: Hand = $Hand
 
-func remove_selected_cards() -> Array[PlayableCard]:
+func remove_selected_cards() -> Array[CardObject]:
 	return hand.remove_selected_cards()
 
 func hand_is_empty() -> bool:
 	return hand.is_empty()
 
-func get_top_card() -> PlayableCard:
+func get_top_card() -> CardObject:
 	return hand.get_top_card()
 
-func remove_top_card() -> PlayableCard:
+func remove_top_card() -> CardObject:
 	return hand.remove_top_card()
 
-func add_card_to_hand(_card: PlayableCard) -> void:
+func add_card_to_hand(_card: CardObject) -> void:
 	hand.add_card(_card)
 
 func set_health_values(_max_health: int, _health: int) -> void:
