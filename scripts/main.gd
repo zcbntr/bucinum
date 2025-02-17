@@ -7,11 +7,8 @@ extends Node2D
 
 @export var shop: Shop
 
-@export var game_controller: GameController
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	game_controller = $GameController
 	shop = $Shop
 	
 	load_player()
@@ -34,31 +31,31 @@ func load_enemy() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	if game_controller.current_state == GameController.GameState.ENEMY_TURN:
+	if GameController.current_state == GameController.GameState.ENEMY_TURN:
 		$Shop.visible = false
 		$GameScreen.visible = true
 		$PlayUI.visible = true
 #		AI Logic
 		play_enemy_card()
 
-	elif game_controller.current_state == GameController.GameState.PLAYER_TURN:
+	elif GameController.current_state == GameController.GameState.PLAYER_TURN:
 		$Shop.visible = false
 		$GameScreen.visible = true
 		$PlayUI.visible = true
 		
-	elif game_controller.current_state == GameController.GameState.ROUND_WON:
+	elif GameController.current_state == GameController.GameState.ROUND_WON:
 		$PlayUI.visible = false
 		$CanvasLayer/RoundWonOverlay.visible = true
 		
-	elif game_controller.current_state == GameController.GameState.VICTORY:
+	elif GameController.current_state == GameController.GameState.VICTORY:
 		$PlayUI.visible = false
 		$CanvasLayer/VictoryOverlay.visible = true
 		
-	elif game_controller.current_state == GameController.GameState.GAMEOVER:
+	elif GameController.current_state == GameController.GameState.GAMEOVER:
 		$PlayUI.visible = false
 		$CanvasLayer/GameOverOverlay.visible = true
 	
-	elif game_controller.current_state == GameController.GameState.SHOP:
+	elif GameController.current_state == GameController.GameState.SHOP:
 		$GameScreen.visible = false
 		$PlayUI.visible = false
 		$CanvasLayer/RoundWonOverlay.visible = false
@@ -76,7 +73,7 @@ func play_enemy_card() -> void:
 				"targets": [$GameScreen/PlayerCharacter]
 			})
 			
-			game_controller.push_comparison_result(GameController.ComparisonResult.ENEMY_WIN)
+			GameController.push_comparison_result(GameController.ComparisonResult.ENEMY_WIN)
 		else:
 			var rng = RandomNumberGenerator.new()
 			var category = enemy_card.stats.keys()[rng.randi_range(0, enemy_card.stats.keys().size() - 1)]
@@ -100,7 +97,7 @@ func play_enemy_card() -> void:
 	#			Implement tie breaker system in the future
 	#			Currently just throw away cards
 				pass
-			game_controller.push_comparison_result(comparison_result)
+			GameController.push_comparison_result(comparison_result)
 	
 	transition_game_state()
 
@@ -115,7 +112,7 @@ func play_player_card(_category: String, _card: CardObject) -> void:
 				"targets": [$GameScreen/EnemyCharacter]
 			})
 			
-			game_controller.push_comparison_result(GameController.ComparisonResult.PLAYER_WIN)
+			GameController.push_comparison_result(GameController.ComparisonResult.PLAYER_WIN)
 		else:
 			var enemy_card = enemy_character.remove_top_card()
 			var comparison_result = GameController.compare_cards(_category, _card, enemy_card)
@@ -135,29 +132,29 @@ func play_player_card(_category: String, _card: CardObject) -> void:
 	#			Implement tie breaker system in the future
 	#			Currently just throw away cards
 				pass
-			game_controller.push_comparison_result(comparison_result)
+			GameController.push_comparison_result(comparison_result)
 	
 	transition_game_state()
 
 func transition_game_state() -> void:
-	if ((game_controller.current_state == GameController.GameState.PLAYER_TURN || game_controller.current_state == GameController.GameState.ENEMY_TURN) && enemy_character.health <= 0):
-		game_controller.transition(GameController.GameState.ROUND_WON)
-	elif ((game_controller.current_state == GameController.GameState.PLAYER_TURN || game_controller.current_state == GameController.GameState.ENEMY_TURN) &&  player_character.health <= 0):
-		game_controller.transition(GameController.GameState.GAMEOVER)
-	elif game_controller.current_state == GameController.GameState.ENEMY_TURN:
-		game_controller.transition(GameController.GameState.PLAYER_TURN)
-	elif game_controller.current_state == GameController.GameState.PLAYER_TURN:
-		game_controller.transition(GameController.GameState.ENEMY_TURN)
-	elif game_controller.current_state == GameController.GameState.ROUND_WON:
-		game_controller.transition(GameController.GameState.SHOP)
-		game_controller.add_money(10)
-		shop.player_money = game_controller.get_money()
-	elif game_controller.current_state == GameController.GameState.SHOP:
-		game_controller.transition(GameController.GameState.PLAYER_TURN)
+	if ((GameController.current_state == GameController.GameState.PLAYER_TURN || GameController.current_state == GameController.GameState.ENEMY_TURN) && enemy_character.health <= 0):
+		GameController.transition(GameController.GameState.ROUND_WON)
+	elif ((GameController.current_state == GameController.GameState.PLAYER_TURN || GameController.current_state == GameController.GameState.ENEMY_TURN) &&  player_character.health <= 0):
+		GameController.transition(GameController.GameState.GAMEOVER)
+	elif GameController.current_state == GameController.GameState.ENEMY_TURN:
+		GameController.transition(GameController.GameState.PLAYER_TURN)
+	elif GameController.current_state == GameController.GameState.PLAYER_TURN:
+		GameController.transition(GameController.GameState.ENEMY_TURN)
+	elif GameController.current_state == GameController.GameState.ROUND_WON:
+		GameController.transition(GameController.GameState.SHOP)
+		GameController.add_money(10)
+		shop.player_money = GameController.get_money()
+	elif GameController.current_state == GameController.GameState.SHOP:
+		GameController.transition(GameController.GameState.PLAYER_TURN)
 		load_enemy()
 		load_player()
 	
-	($StateLbl as Label).set_text(str(game_controller.current_state))
+	($StateLbl as Label).set_text(str(GameController.current_state))
 
 
 func _on_create_card_button_pressed() -> void:
@@ -185,16 +182,16 @@ func generate_random_card() -> CardObject:
 
 
 func _on_player_character_category_clicked(category: String, card: CardObject) -> void:
-	if game_controller.current_state == GameController.GameState.PLAYER_TURN:
+	if GameController.current_state == GameController.GameState.PLAYER_TURN:
 		if card == player_character.get_top_card():
 			play_player_card(category, player_character.remove_top_card())
 
 
 func _on_continue_button_pressed() -> void:
-	if (game_controller.current_state == GameController.GameState.ROUND_WON):
+	if (GameController.current_state == GameController.GameState.ROUND_WON):
 		transition_game_state()
 
 
 func _on_shop_exit_shop_pressed() -> void:
-	if (game_controller.current_state == GameController.GameState.SHOP):
+	if (GameController.current_state == GameController.GameState.SHOP):
 		transition_game_state()

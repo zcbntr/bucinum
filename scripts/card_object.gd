@@ -12,7 +12,7 @@ static var card_category_display_scene: PackedScene = preload("res://scenes/card
 static var playable_component_scene: PackedScene = preload("res://scenes/playable_component.tscn")
 static var action_component_scene: PackedScene = preload("res://scenes/action_component.tscn")
 
-@export var stats: Dictionary = {
+@export var card_stats: Dictionary = {
 	"Cuteness": 99,
 	"Fluffyness": 99,
 	"Mischief": 100,
@@ -27,6 +27,8 @@ static var action_component_scene: PackedScene = preload("res://scenes/action_co
 @export var card_damage: int = 1
 @export var card_image: Node2D
 @export var hovered_category: String
+@export var is_hovered: bool = false
+@export var is_selected: bool = false
 
 @onready var cost_lbl: Label = $CostDisplay/CostLbl
 @onready var damage_lbl: Label = $DamageDisplay/DamageLbl
@@ -34,7 +36,6 @@ static var action_component_scene: PackedScene = preload("res://scenes/action_co
 @onready var base_sprite: Sprite2D = $BaseCardSprite
 @onready var category_displays: Array[Node2D]
 @onready var clickable_collision_area: CollisionShape2D = $ClickableArea/CollisionShape2D
-@onready var action: Node2D = $CardAction
 
 static func new_card(_name: String, _description: String, _cost: int, _damage: int, _stats: Dictionary) -> CardObject:
 	var card: CardObject = card_scene.instantiate()
@@ -46,10 +47,10 @@ static func new_card(_name: String, _description: String, _cost: int, _damage: i
 
 static func generate_random_card() -> CardObject:
 	var rng = RandomNumberGenerator.new()
-	var card_name = "Card " + str(rng.randi_range(1, 100))
-	var cost = rng.randi_range(1, 10)
-	var damage = rng.randi_range(1, 10)
-	var stats: Dictionary = {
+	var cname = "Card " + str(rng.randi_range(1, 100))
+	var ccost = rng.randi_range(1, 10)
+	var cdamage = rng.randi_range(1, 10)
+	var cstats: Dictionary = {
 		"Cuteness": rng.randi_range(1, 100),
 		"Fluffyness": rng.randi_range(1, 100),
 		"Mischief": rng.randi_range(1, 10),
@@ -57,7 +58,7 @@ static func generate_random_card() -> CardObject:
 		"Age": rng.randi_range(1, 22)
 	}
 	
-	var card = CardObject.new_card(card_name, "", cost, damage, stats)
+	var card = CardObject.new_card(cname, "", ccost, cdamage, cstats)
 	return card
 
 
@@ -97,7 +98,7 @@ func set_values(_name: String, _description: String, _cost: int, _damage: int, _
 	card_description = _description
 	card_cost = _cost
 	card_damage = _damage
-	stats = _stats
+	card_stats = _stats
 
 func set_card_name(_name: String) -> void:
 	card_name = _name
@@ -118,10 +119,10 @@ func set_card_description(_description: String) -> void:
 func set_card_stats(_stats: Dictionary) -> void:
 	#	Create category displays for each stat
 	clear_category_displays()
-	for i in stats.keys().size():
+	for i in card_stats.keys().size():
 		var cat_display = card_category_display_scene.instantiate()
-		cat_display.category_name = stats.keys()[i]
-		cat_display.category_value = stats.values()[i]
+		cat_display.category_name = card_stats.keys()[i]
+		cat_display.category_value = card_stats.values()[i]
 		cat_display.position = Vector2(-39, -12 + (14 * i))
 		cat_display.mouse_entered.connect(_on_category_mouse_entered)
 		cat_display.mouse_exited.connect(_on_category_mouse_exited)
@@ -139,10 +140,10 @@ func update_card_graphics() -> void:
 	
 	#	Create category displays for each stat
 	clear_category_displays()
-	for i in stats.keys().size():
+	for i in card_stats.keys().size():
 		var cat_display = card_category_display_scene.instantiate()
-		cat_display.category_name = stats.keys()[i]
-		cat_display.category_value = stats.values()[i]
+		cat_display.category_name = card_stats.keys()[i]
+		cat_display.category_value = card_stats.values()[i]
 		cat_display.position = Vector2(-39, -12 + (14 * i))
 		cat_display.mouse_entered.connect(_on_category_mouse_entered)
 		cat_display.mouse_exited.connect(_on_category_mouse_exited)
@@ -155,15 +156,29 @@ func clear_category_displays() -> void:
 	category_displays.clear()
 
 func highlight():
-	base_sprite.set_modulate(Color(0.75, 0.6, 0.75, 1))
+	if (!is_hovered):
+		is_hovered = true
+		base_sprite.set_modulate(Color(0.75, 0.6, 0.75, 1))
 
 func unhighlight():
-	base_sprite.set_modulate(Color(1,1,1,1))
+	if (is_hovered):
+		is_hovered = false
+		base_sprite.set_modulate(Color(1,1,1,1))
 
 func select():
-	base_sprite.set_modulate(Color(0.42, 0.25, 0.55, 1))
+	if (!is_selected):
+		is_selected = true
+		base_sprite.set_modulate(Color(0.42, 0.25, 0.55, 1))
+		set_position(Vector2(position.x, position.y - 10))
+
+func unselect():
+	if (is_selected):
+		is_selected = false
+		set_position(Vector2(position.x, position.y - 10))
 	
 func highlight_select():
+	is_hovered = true
+	is_selected = true
 	base_sprite.set_modulate(Color(0.5, 0.3, 1, 1))
 
 func highlight_category(category: String) -> void:
@@ -206,6 +221,6 @@ func _on_category_mouse_exited(_category: String) -> void:
 		category_unhovered.emit(self)
 
 
-func _on_clickable_area_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+func _on_clickable_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event.is_action_pressed("mouse_click"):
 		card_clicked.emit(self)

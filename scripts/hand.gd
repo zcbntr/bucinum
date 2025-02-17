@@ -100,7 +100,7 @@ func get_card_position(_angle_in_deg: float) -> Vector2:
 	
 	return Vector2(int(x), int(y))
 
-func _update_card_transform(card: CardObject, _angle_in_deg: float):
+func _update_card_transform(card: CardObject, _angle_in_deg: float) -> void:
 #	Random variation
 	var rng = RandomNumberGenerator.new()
 	var x_offset = rng.randf_range(-0.5 * X_VAR, 0.5 * X_VAR)
