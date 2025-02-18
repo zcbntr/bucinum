@@ -70,9 +70,6 @@ func _process(_delta: float) -> void:
 		$Shop.visible = true
 
 func play_cards(_category: String, _player_card: CardObject, _enemy_card) -> void:	
-	var player_card_playable_component = Component.find_component(_player_card, &"PlayableComponent")	
-	var enemy_card_playable_component = Component.find_component(_enemy_card, &"PlayableComponent")
-	assert(player_card_playable_component != null && enemy_card_playable_component != null)
 	var play_data = PlayData.new()
 	play_data.category = _category
 
@@ -80,6 +77,7 @@ func play_cards(_category: String, _player_card: CardObject, _enemy_card) -> voi
 	if _enemy_card == null && _player_card == null:
 		GameController.push_comparison_result(GameController.ComparisonResult.TIE)
 	elif _enemy_card == null:
+		var player_card_playable_component = Component.find_component(_player_card, &"PlayableComponent")	
 		play_data.caster = player_character
 		play_data.targets.push_back(enemy_character)
 		player_card_playable_component.play(play_data)
@@ -87,6 +85,7 @@ func play_cards(_category: String, _player_card: CardObject, _enemy_card) -> voi
 		
 		GameController.push_comparison_result(GameController.ComparisonResult.PLAYER_WIN)
 	elif _player_card == null:
+		var enemy_card_playable_component = Component.find_component(_enemy_card, &"PlayableComponent")
 		play_data.caster = enemy_character
 		play_data.targets.push_back(player_character)
 		enemy_card_playable_component.play(play_data)
@@ -96,12 +95,14 @@ func play_cards(_category: String, _player_card: CardObject, _enemy_card) -> voi
 	else:	
 		var comparison_result = GameController.compare_cards(_category, _player_card, _enemy_card)
 		if comparison_result == GameController.ComparisonResult.PLAYER_WIN:
+			var player_card_playable_component = Component.find_component(_player_card, &"PlayableComponent")	
 			play_data.caster = player_character
 			play_data.targets.push_back(enemy_character)
 			player_card_playable_component.play(play_data)
 			player_character.add_card_to_hand(_player_card)
 			player_character.add_card_to_hand(_enemy_card)
 		elif comparison_result == GameController.ComparisonResult.ENEMY_WIN:
+			var enemy_card_playable_component = Component.find_component(_enemy_card, &"PlayableComponent")
 			play_data.caster = enemy_character
 			play_data.targets.push_back(player_character)
 			enemy_card_playable_component.play(play_data)

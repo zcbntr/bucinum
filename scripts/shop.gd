@@ -50,6 +50,7 @@ func _on_card_selected(_card: CardObject) -> void:
 	if GameController.get_money() >= _card.card_cost:
 		_card.visible = false
 		cards.remove_at(cards.find(_card))
+		$CardsSection.remove_child(_card)
 		player_character.add_card_to_hand(_card)
 		lay_out_cards()
 		GameController.remove_money(_card.card_cost)
