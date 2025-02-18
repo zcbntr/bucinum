@@ -10,7 +10,6 @@ signal mouse_exited(category_name: String)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	
 	($CategoryLbl as Label).set_modulate(Color(0.8, 0.8, 0.8, 1))
 	($CategoryLbl as Label).set_text(category_name + ":" + str(category_value))
 

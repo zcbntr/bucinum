@@ -195,10 +195,11 @@ func set_unselected():
 		card_unselected.emit(self)
 
 func highlight_category(category: String) -> void:
-	for category_display in category_displays:
-		if category_display.category_name == category:
-			category_display.highlight()
-			break
+	if is_hovered:
+		for category_display in category_displays:
+			if category_display.category_name == category:
+				category_display.highlight()
+				break
 
 func unhighlight_category(category: String) -> void:
 	for category_display in category_displays:
@@ -266,6 +267,7 @@ func _on_clickable_area_input_event(viewport: Node, event: InputEvent, _shape_id
 		elif (!is_selected):
 			set_selected()
 		
-		var selected_category = get_selected_category()
-		if selected_category != "":
-			category_clicked.emit(selected_category, self)
+		if is_hovered:
+			var selected_category = get_selected_category()
+			if selected_category != "":
+				category_clicked.emit(selected_category, self)
