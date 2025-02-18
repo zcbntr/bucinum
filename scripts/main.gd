@@ -15,7 +15,7 @@ func _ready() -> void:
 	load_enemy()
 	
 #	Give player their initial cards
-	for n in 8:
+	for n in 5:
 		player_character.add_card_to_hand(CardObject.generate_random_card())
 	
 	shop = $Shop
@@ -30,6 +30,7 @@ func load_player() -> void:
 func load_enemy() -> void:
 	enemy_character = $GameScreen/EnemyCharacter
 	enemy_character.set_health_values(15, 15)
+	enemy_character.clear_hand()
 	for n in 10:
 		enemy_character.add_card_to_hand(CardObject.generate_random_card())
 
@@ -41,7 +42,7 @@ func _process(_delta: float) -> void:
 		$PlayUI.visible = true
 		
 #		AI Logic
-		play_cards(enemy_character.get_random_category_to_play(), player_character.remove_top_card(), enemy_character.remove_top_card())
+		play_cards(enemy_character.get_random_category_to_play(), player_character.pop_top_card(), enemy_character.pop_top_card())
 
 	elif GameController.current_state == GameController.GameState.PLAYER_TURN:
 		$Shop.visible = false
@@ -92,7 +93,7 @@ func play_cards(_category: String, _player_card: CardObject, _enemy_card) -> voi
 		enemy_character.add_card_to_hand(_enemy_card)
 		
 		GameController.push_comparison_result(GameController.ComparisonResult.ENEMY_WIN)
-	else:	
+	else:
 		var comparison_result = GameController.compare_cards(_category, _player_card, _enemy_card)
 		if comparison_result == GameController.ComparisonResult.PLAYER_WIN:
 			var player_card_playable_component = Component.find_component(_player_card, &"PlayableComponent")	
@@ -110,6 +111,7 @@ func play_cards(_category: String, _player_card: CardObject, _enemy_card) -> voi
 			enemy_character.add_card_to_hand(_player_card)
 		else:
 			print("tie")
+#			Lots of bugs due to not properly handling this
 #			Implement tie breaker system in the future
 #			Currently just throw away cards
 #			Maybe trigger both cards actions but do not damage?
@@ -133,7 +135,6 @@ func transition_game_state() -> void:
 	elif GameController.current_state == GameController.GameState.SHOP:
 		GameController.transition(GameController.GameState.PLAYER_TURN)
 		load_enemy()
-		load_player()
 	
 	($StateLbl as Label).set_text(str(GameController.current_state))
 
@@ -145,12 +146,9 @@ func _on_create_card_button_pressed() -> void:
 func _on_delete_card_button_pressed() -> void:
 	player_character.remove_selected_cards()
 
-func _on_player_character_category_clicked(category: String, card: CardObject) -> void:
+func _on_player_character_category_clicked(category: String, _card: CardObject) -> void:
 	if GameController.current_state == GameController.GameState.PLAYER_TURN:
-		if card == player_character.get_top_card():
-			var top_card = player_character.remove_top_card()
-			assert(Component.has_component(top_card, "PlayableComponent"))
-			play_cards(category, top_card, enemy_character.remove_top_card())
+		play_cards(category, player_character.pop_top_card(), enemy_character.pop_top_card())
 
 
 func _on_continue_button_pressed() -> void:

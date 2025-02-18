@@ -21,11 +21,14 @@ func hand_is_empty() -> bool:
 func get_top_card() -> CardObject:
 	return hand.get_top_card()
 
-func remove_top_card() -> CardObject:
-	return hand.remove_top_card()
+func pop_top_card() -> CardObject:
+	return hand.pop_top_card()
 
 func add_card_to_hand(_card: CardObject) -> void:
 	hand.add_card(_card)
+
+func clear_hand() -> void:
+	hand.clear()
 
 func set_health_values(_max_health: int, _health: int) -> void:
 	max_health = _max_health

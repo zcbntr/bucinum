@@ -22,13 +22,11 @@ func is_empty() -> bool:
 	return cards.is_empty()
 
 # Removes card at front of queue - right most card in hand
-func remove_top_card() -> CardObject:
+func pop_top_card() -> CardObject:
 	if (is_empty()):
 		return null
 	
-	var card = cards[0]
-	remove_card(0)
-	return card
+	return remove_card(0)
 
 func get_top_card() -> CardObject:
 	if (is_empty()):
@@ -57,6 +55,9 @@ func remove_card(_index: int) -> CardObject:
 		cards_selected.remove_at(selected_card_index)
 	
 	cards.remove_at(_index)
+	removing_card.category_clicked.disconnect(_on_card_category_clicked)
+	removing_card.card_selected.disconnect(_on_card_selected)
+	removing_card.card_unselected.disconnect(_on_card_unselected)
 	remove_child(removing_card)
 	fan_cards()
 	
@@ -70,6 +71,10 @@ func remove_selected_cards() -> Array[CardObject]:
 		removing_cards.push_back(remove_card(card_index))
 	
 	return removing_cards
+
+func clear() -> void:
+	while cards.size() != 0:
+		remove_card(0)
 
 # Fan cards
 func fan_cards():
