@@ -82,7 +82,10 @@ func _ready() -> void:
 
 
 func set_clickable_area_size(_size: Vector2) -> void:
-	clickable_collision_area.shape.set_size(_size)
+	(clickable_collision_area.shape as RectangleShape2D).set_size(_size)
+
+func get_clickable_area_size() -> Vector2:
+	return (clickable_collision_area.shape as RectangleShape2D).get_size()
 
 
 func show_cost() -> void:
@@ -168,6 +171,7 @@ func set_hovered():
 		is_hovered = true
 		base_sprite.set_modulate(Color(0.75, 0.6, 0.75, 1))
 		set_position(Vector2(position.x, position.y - 5))
+		set_clickable_area_size(Vector2(get_clickable_area_size().x, get_clickable_area_size().y + 10))
 		card_hovered.emit(self)
 
 func set_unhovered():
@@ -175,6 +179,7 @@ func set_unhovered():
 		is_hovered = false
 		base_sprite.set_modulate(Color(1,1,1,1))
 		set_position(Vector2(position.x, position.y + 5))
+		set_clickable_area_size(Vector2(get_clickable_area_size().x, get_clickable_area_size().y - 10))
 		card_unhovered.emit(self)
 
 func set_selected():
@@ -188,11 +193,6 @@ func set_unselected():
 		is_selected = false
 		set_position(Vector2(position.x, position.y + 15))
 		card_unselected.emit(self)
-	
-func highlight_select():
-	is_hovered = true
-	is_selected = true
-	base_sprite.set_modulate(Color(0.5, 0.3, 1, 1))
 
 func highlight_category(category: String) -> void:
 	for category_display in category_displays:
