@@ -4,7 +4,7 @@ signal exit_shop_pressed
 
 @export var cards: Array[CardObject]
 @export var upgrades: Array
-@export var player_hand: Hand
+@export var player_character: PlayerCharacter
 
 
 # Called when the node enters the scene tree for the first time.
@@ -50,5 +50,6 @@ func _on_card_selected(_card: CardObject) -> void:
 	if GameController.get_money() >= _card.card_cost:
 		_card.visible = false
 		cards.remove_at(cards.find(_card))
-		player_hand.add_card(_card)
+		player_character.add_card_to_hand(_card)
 		lay_out_cards()
+		GameController.remove_money(_card.card_cost)

@@ -41,6 +41,8 @@ func add_card(_card: CardObject):
 	_card.category_clicked.connect(_on_card_category_clicked)
 	_card.card_selected.connect(_on_card_selected)
 	_card.card_unselected.connect(_on_card_unselected)
+	_card.make_playable()
+	_card.visible = true
 	cards.push_back(_card)
 	add_child(_card)
 	
@@ -55,8 +57,6 @@ func remove_card(_index: int) -> CardObject:
 		cards_selected.remove_at(selected_card_index)
 	
 	cards.remove_at(_index)
-	#removing_card.category_hovered.disconnect()
-	#removing_card.category_unhovered.disconnect()
 	remove_child(removing_card)
 	fan_cards()
 	

@@ -66,12 +66,14 @@ static func generate_random_card() -> CardObject:
 
 
 func make_playable() -> void:
-	var playable_component: PlayableComponent = playable_component_scene.instantiate()
-	add_child(playable_component)
+	if !Component.has_component(self, &"PlayableComponent"):
+		var playable_component: PlayableComponent = playable_component_scene.instantiate()
+		playable_component.register_component(self, playable_component)
 
 func make_actionable() -> void:
-	var action_component: ActionComponent = action_component_scene.instantiate()
-	add_child(action_component)
+	if !Component.has_component(self, &"ActionComponent"):
+		var action_component: ActionComponent = action_component_scene.instantiate()
+		action_component.register_component(self, action_component)
 
 
 # Called when the node enters the scene tree for the first time.
@@ -267,4 +269,3 @@ func _on_clickable_area_input_event(viewport: Node, event: InputEvent, _shape_id
 		var selected_category = get_selected_category()
 		if selected_category != "":
 			category_clicked.emit(selected_category, self)
-		

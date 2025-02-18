@@ -1,18 +1,24 @@
-class_name PlayableComponent extends Node2D
+class_name PlayableComponent extends Component
 
-func _enter_tree() -> void:
-#	This component can only be a child of a CardObject
-	assert(owner is CardObject)
-	owner.set_meta(&"PlayableComponent", self)
+func get_component_name() -> StringName:
+	return "PlayableComponent"
 
-func _exit_tree() -> void:
-	owner.remove_meta(&"PlayableComponent")
+func play(play_data: PlayData) -> void:
+	var action_component: ActionComponent = Component.find_component(owner, &"ActionComponent")
+	
+	if action_component != null:
+		action_component.pre_play_action(play_data)
+		
+	if action_component != null:
+		action_component.play_action(play_data)
+	
+	play_function(play_data)
+	
+	if action_component != null:
+		action_component.post_play_action(play_data)
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass
+func play_function(play_data: PlayData) -> void:
+	var card: CardObject = owner
+	for target in play_data.targets:
+		target.take_damage(card.card_damage)
+	

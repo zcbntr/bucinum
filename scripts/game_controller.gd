@@ -18,24 +18,7 @@ enum ComparisonResult {
 static var current_state: GameState = GameState.PLAYER_TURN
 static var comparison_history: Array[ComparisonResult]
 
-static var player_hand: Hand
-static var enemy_hand: Hand
 static var money: int = 0
-
-static func get_player_hand() -> Hand:
-	return player_hand
-
-static func add_card_to_player_hand(_card: CardObject) -> void:
-	player_hand.add_card(_card)
-
-static func remove_card_from_player_hand(_card: CardObject) -> void:
-	player_hand.remove_card(player_hand.find(_card))
-
-static func add_card_to_enemy_hand(_card: CardObject) -> void:
-	enemy_hand.add_card(_card)
-
-static func remove_card_from_enemy_hand(_card: CardObject) -> void:
-	enemy_hand.remove_card(enemy_hand.find(_card))
 
 static func transition(next_state: GameState):
 	current_state = next_state
