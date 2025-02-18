@@ -49,6 +49,8 @@ static func new_card(_name: String, _description: String, _cost: int, _damage: i
 
 
 static func generate_random_card() -> CardObject:
+#	Use StaticData once working:
+#	StaticData.card_data
 	var rng = RandomNumberGenerator.new()
 	var cname = "Card " + str(rng.randi_range(1, 100))
 	var ccost = rng.randi_range(1, 10)
